@@ -25,20 +25,20 @@ class Root:
 @dataclass()
 class Header:
     credentials: Credentials
-    # method: str = Literal[
-    #     "getHotelList",
-    #     "getSpecialList",
-    #     "getRoomList",
-    #     "getPriceList",
-    #     "getRoomAvailability",
-    #     "getHotelPictures",
-    #     "getHotelPictureGroups",
-    #     "prepareBooking",
-    #     "getBooking",
-    #     "createInquiry",
-    #     "getUserSources",
-    # ]
-    method: str
+    method: str = Literal[
+        "getHotelList",
+        "getSpecialList",
+        "getRoomList",
+        "getPriceList",
+        "getRoomAvailability",
+        "getHotelPictures",
+        "getHotelPictureGroups",
+        "prepareBooking",
+        "getBooking",
+        "createInquiry",
+        "getUserSources",
+    ]
+    # method: str
     paging: Paging | None = field(default=None)
 
     def to_xml(self) -> ET.Element:

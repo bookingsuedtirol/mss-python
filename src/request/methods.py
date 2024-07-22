@@ -33,24 +33,6 @@ class GetHotelList(Method):
         lang: XML Search Element with the language element defined
         """
 
-        # USER = getenv("MSS_SERVICE_USERNAME")
-        # PASSWORD = getenv("MSS_SERVICE_PASSWORD")
-        # SOURCE = getenv("MSS_SERVICE_SOURCE")
-        # temp = {}
-        # temp["user"] = USER
-        # temp["password"] = PASSWORD
-        # temp["source"] = SOURCE
-
-        # root = ET.Element("root")
-        # headers = ET.SubElement(root, "header")
-        # credentials = ET.SubElement(headers, "credentials")
-        # for x in temp:
-        #     ET.SubElement(credentials, x).text = temp[x]
-
-        # ET.SubElement(
-        #     ET.SubElement(ET.SubElement(root, "request"), "search"), "lang"
-        # ).text = lang
-        # # return ET.ElementTree(root)
         header = Header(cred, self.name)
         req = Request(lang)
         root = Root(header, req)
