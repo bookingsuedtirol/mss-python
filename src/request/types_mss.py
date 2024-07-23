@@ -8,6 +8,21 @@ from abc import ABC  # , abstractmethod
 # from methods import Method
 
 
+def get_child_xml(value, field, root):
+    if value != None and field != "tag":
+        if type(value) == int or type(value) == float:
+            ET.SubElement(root, field).text = str(value)
+        elif type(value) == str:
+            ET.SubElement(root, field).text = value
+        elif type(value) == list:
+            for x in value:
+                get_child_xml(x, field, root)
+        elif isinstance(value, Enum):
+            ET.SubElement(root, field).text = str(value.value)
+        else:
+            root.append(value.to_xml())
+
+
 class BaseType(ABC):
     def __init__(self, tag):
         self.tag = tag
@@ -17,11 +32,7 @@ class BaseType(ABC):
         # root.append(self.search.to_xml())
 
         for field, value in vars(self).items():
-            if value != None and field != "tag":
-                if type(value) == int or type(value) == str:
-                    ET.SubElement(root, field).text = value
-                else:
-                    root.append(value.to_xml())
+            get_child_xml(value, field, root)
 
         return root
 
@@ -294,7 +305,7 @@ class SearchHotel(BaseType):
     theme: HotelTheme | None = field(default=None)
 
     def __post_init__(self):
-        super().__init__("SearchHotel")
+        super().__init__("search_hotel")
 
     # def to_xml(self) -> ET.Element:
     #     root = ET.Element(self.tag)
@@ -314,69 +325,72 @@ class SearchHotel(BaseType):
 
 
 class HotelType(Enum):
-    Hotel = 1
-    SkiSchool = 2
-    Residence = 4
-    Appartment = 16
-    FarmVacation = 32
-    MountainInn = 64
-    CampingSite = 128
-    HolidayHome = 256
-    YouthHostel = 512
-    Guesthouse = 1024
-    Refuge = 2048
-    Garni = 4096
-    Inn = 8192
+    Hotel = "1"
+    SkiSchool = "2"
+    Residence = "4"
+    Appartment = "16"
+    FarmVacation = "32"
+    MountainInn = "64"
+    CampingSite = "128"
+    HolidayHome = "256"
+    YouthHostel = "512"
+    Guesthouse = "1024"
+    Refuge = "2048"
+    Garni = "4096"
+    Inn = "8192"
 
 
 class HotelFeature(Enum):
-    Garage = 1
-    Elevator = 2
-    Restaurant = 4
-    Gym = 8
-    Wellness = 16
-    Spa = 32
-    Breakfast = 64
-    Buffet = 128
-    OutdoorPool = 256
-    IndoorPool = 512
-    Bar = 1024
-    BarrierFree = 2048
-    Wlan = 4096
-    ShuttleService = 8192
-    Childcare = 16384
-    SmallPetsAllowed = 32768
-    BeautyFarm = 65536
-    CentralLocation = 262144
-    CoveredParking = 524288
-    OpenParking = 1048576
-    Massages = 2097152
-    Sauna = 4194304
-    SteamBath = 8388608
-    PublicBar = 16777216
-    DogsAllowed = 33554432
+    Garage = "1"
+    Elevator = "2"
+    Restaurant = "4"
+    Gym = "8"
+    Wellness = "16"
+    Spa = "32"
+    Breakfast = "64"
+    Buffet = "128"
+    OutdoorPool = "256"
+    IndoorPool = "512"
+    Bar = "1024"
+    BarrierFree = "2048"
+    Wlan = "4096"
+    ShuttleService = "8192"
+    Childcare = "16384"
+    SmallPetsAllowed = "32768"
+    BeautyFarm = "65536"
+    CentralLocation = "262144"
+    CoveredParking = "524288"
+    OpenParking = "1048576"
+    Massages = "2097152"
+    Sauna = "4194304"
+    SteamBath = "8388608"
+    PublicBar = "16777216"
+    DogsAllowed = "33554432"
 
 
 class HotelTheme(Enum):
-    Family = 1
-    Wellness = 2
-    Hiking = 4
-    Motorcycle = 8
-    Bike = 16
-    Golf = 32
-    Riding = 64
-    Romantic = 128
-    Ski = 256
-    Meeting = 512
-    CrossCountrySkiing = 1024
-    Culture = 2048
-    Snowshoeing = 4096
+    Family = "1"
+    Wellness = "2"
+    Hiking = "4"
+    Motorcycle = "8"
+    Bike = "16"
+    Golf = "32"
+    Riding = "64"
+    Romantic = "128"
+    Ski = "256"
+    Meeting = "512"
+    CrossCountrySkiing = "1024"
+    Culture = "2048"
+    Snowshoeing = "4096"
 
 
 @dataclass
-class SearchLocation:
+class SearchLocation(BaseType):
     location: list | None = field(default=None)  # number[], Location ID
     location_lts: list | None = field(default=None)  # string[], LTS Location RID
+
+    def __post_init__(self):
+        super().__init__("search_location")
 
 
 @dataclass
@@ -387,7 +401,7 @@ class SearchDistance:
 
 
 @dataclass
-class SearchOffer:
+class SearchOffer(BaseType):
     arrival: str  # Date YYYY-MM-DD
     departure: str  # Date YYYY-MM-DD
     service: Board
@@ -397,48 +411,54 @@ class SearchOffer:
     typ: SearchOfferType | None = field(default=None)
     rateplan: Rateplan | None = field(default=None)
 
+    def __post_init__(self):
+        super().__init__("search_offer")
+
 
 class SearchOfferType(Enum):
-    DefaultPricelist = 10
-    PeopleAge = 20
-    PeopleNumber = 21
-    Staying = 22
-    BookingDate = 23
-    Weekday = 24
-    NoReference = 25
-    SpecialPeopleAge = 50
-    SpecialPeopleNumber = 51
-    SpecialStaying = 52
-    SpecialBookingDate = 53
-    SpecialWeekday = 54
-    SpecialNoReference = 55
+    DefaultPricelist = "10"
+    PeopleAge = "20"
+    PeopleNumber = "21"
+    Staying = "22"
+    BookingDate = "23"
+    Weekday = "24"
+    NoReference = "25"
+    SpecialPeopleAge = "50"
+    SpecialPeopleNumber = "51"
+    SpecialStaying = "52"
+    SpecialBookingDate = "53"
+    SpecialWeekday = "54"
+    SpecialNoReference = "55"
 
 
 class Board(Enum):
-    Without = 1
-    Breakfast = 2
-    HalfBoard = 3
-    FullBoard = 4
-    AllInclusive = 5
+    Without = "1"
+    Breakfast = "2"
+    HalfBoard = "3"
+    FullBoard = "4"
+    AllInclusive = "5"
 
 
 class RoomFeature(Enum):
-    Balcony = 1
-    Terrace = 2
-    MiniBar = 4
-    Safe = 8
-    TV = 16
-    Satellite = 32
-    Wlan = 64
-    Internet = 128
-    BarrierFree = 512
+    Balcony = "1"
+    Terrace = "2"
+    MiniBar = "4"
+    Safe = "8"
+    TV = "16"
+    Satellite = "32"
+    Wlan = "64"
+    Internet = "128"
+    BarrierFree = "512"
 
 
 @dataclass
-class SearchLts:
+class SearchLts(BaseType):
     A0Ene: int | None = field(default=None)  # number
     A0MTV: int | None = field(default=None)  # number
     A0Rep: int | None = field(default=None)  # number
+
+    def __post_init__(self):
+        super().__init__("search_lts")
 
 
 @dataclass
@@ -586,9 +606,14 @@ class Tracking:
 
 
 @dataclass
-class Stars:
-    min: int | float | None = field(default=None)  # number, min can be 1
+class Stars(BaseType):
+    min: int | float | None = field(
+        default=None
+    )  # number, min can be 1, values are 1, 2, 3, 3.5, 4, 4.5, 5
     max: int | float | None = field(default=None)  # number, max can be 5
+
+    def __post_init__(self):
+        super().__init__("stars")
 
 
 @dataclass
@@ -600,7 +625,7 @@ class Address:
 
 
 @dataclass
-class Room:
+class Room(BaseType):
     room_seq: int  # number
     person: list  # number[], 1..n Persons and their age (store only age inside tags)
     offer_id: int | None = field(default=None)  # number
@@ -608,17 +633,23 @@ class Room:
     service: Board | None = field(default=None)
     room_type: RoomType | None = field(default=None)
 
+    def __post_init__(self):
+        super().__init__("room")
+
 
 class RoomType(Enum):
-    All = 0
-    Room = 1
-    Apartment = 2
+    All = "0"
+    Room = "1"
+    Apartment = "2"
 
 
 @dataclass
-class Rateplan:
-    code: str | None = field(default=None)
-    source: str | None = field(default=None)
+class Rateplan(BaseType):
+    code: str  # | None = field(default=None)
+    source: str  # | None = field(default=None)
+
+    def __post_init__(self):
+        super().__init__("rateplan")
 
 
 @dataclass
