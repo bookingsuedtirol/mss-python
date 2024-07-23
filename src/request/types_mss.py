@@ -3,27 +3,49 @@ from dataclasses import dataclass, field
 from enum import Enum
 from typing import Literal
 import xml.etree.ElementTree as ET
+from abc import ABC  # , abstractmethod
 
 # from methods import Method
 
 
-@dataclass()
-class Root:
-    header: Header
-    request: Request
-    version: str = "2.0"
+class BaseType(ABC):
+    def __init__(self, tag):
+        self.tag = tag
 
-    def to_xml(self):
-        root = ET.Element("root")
-        # ET.SubElement(root,"") #version??
-        root.append(self.header.to_xml())
-        root.append(self.request.to_xml())
+    def to_xml(self) -> ET.Element:
+        root = ET.Element(self.tag)
+        # root.append(self.search.to_xml())
+
+        for field, value in vars(self).items():
+            if value != None and field != "tag":
+                if type(value) == int or type(value) == str:
+                    ET.SubElement(root, field).text = value
+                else:
+                    root.append(value.to_xml())
 
         return root
 
 
 @dataclass()
-class Header:
+class Root(BaseType):
+    header: Header
+    request: Request
+    version: str = "2.0"
+
+    def __post_init__(self):
+        super().__init__("root")
+
+    # def to_xml(self):
+    #     root = ET.Element(self.tag)
+    #     # ET.SubElement(root,"") #version??
+    #     root.append(self.header.to_xml())
+    #     root.append(self.request.to_xml())
+
+    #     return root
+
+
+@dataclass()
+class Header(BaseType):
     credentials: Credentials
     method: str = Literal[
         "getHotelList",
@@ -41,27 +63,33 @@ class Header:
     # method: str
     paging: Paging | None = field(default=None)
 
-    def to_xml(self) -> ET.Element:
-        root = ET.Element("header")
-        root.append(self.credentials.to_xml())
-        ET.SubElement(root, "method").text = self.method
+    def __post_init__(self):
+        super().__init__("header")
 
-        return root
+    # def to_xml(self) -> ET.Element:
+    #     root = ET.Element(self.tag)
+    #     root.append(self.credentials.to_xml())
+    #     ET.SubElement(root, "method").text = self.method
+
+    #     return root
 
 
 @dataclass()
-class Credentials:
+class Credentials(BaseType):
     user: str
     password: str
     source: str
 
-    def to_xml(self) -> ET.Element:
-        root = ET.Element("credentials")
-        ET.SubElement(root, "user").text = self.user
-        ET.SubElement(root, "password").text = self.password
-        ET.SubElement(root, "source").text = self.source
+    def __post_init__(self):
+        super().__init__("credentials")
 
-        return root
+    # def to_xml(self) -> ET.Element:
+    #     root = ET.Element(self.tag)
+    #     ET.SubElement(root, "user").text = self.user
+    #     ET.SubElement(root, "password").text = self.password
+    #     ET.SubElement(root, "source").text = self.source
+
+    #     return root
 
 
 @dataclass()
@@ -71,7 +99,7 @@ class Paging:
 
 
 @dataclass
-class Request:
+class Request(BaseType):
     search: Search
     options: Options | None = field(default=None)
 
@@ -81,22 +109,20 @@ class Request:
 
     logging: Logging | None = field(default=None)
 
-    def to_xml(self) -> ET.Element:
-        root = ET.Element("request")
-        # root.append(self.search.to_xml())
+    def __post_init__(self):
+        super().__init__("request")
 
-        for field, value in vars(self).items():
-            if value != None:
-                if type(value) == int or type(value) == str:
-                    ET.SubElement(root, field).text = value
-                else:
-                    root.append(value.to_xml())
+    # def to_xml(self) -> ET.Element:
+    #     root = ET.Element(self.tag)
+    #     ET.SubElement(root, "user").text = self.user
+    #     ET.SubElement(root, "password").text = self.password
+    #     ET.SubElement(root, "source").text = self.source
 
-        return root
+    #     return root
 
 
 @dataclass
-class Search:
+class Search(BaseType):
     lang: str = Literal["de", "it", "en", "es", "fr", "ru", "da"]
     result_id: str | None = field(default=None)
 
@@ -132,18 +158,24 @@ class Search:
 
     pic_group_id: int | None = field(default=None)
 
-    def to_xml(self) -> ET.Element:
-        root = ET.Element("search")
-        # ET.SubElement(root, "lang").text = self.lang
+    def __post_init__(self):
+        super().__init__("search")
 
-        for field, value in vars(self).items():
-            if value != None:
-                if type(value) == int or type(value) == str:
-                    ET.SubElement(root, field).text = value
-                else:
-                    root.append(value.to_xml())
+    # def to_xml(self) -> ET.Element:
+    #     root = ET.Element(self.tag)
+    #     # ET.SubElement(root, "lang").text = self.lang
 
-        return root
+    #     for field, value in vars(self).items():
+    #         if value != None:
+    #             if type(value) == int or type(value) == str:
+    #                 ET.SubElement(root, field).text = value
+    #             elif type(value) == list:
+    #                 for x in value:
+    #                     ET.SubElement(root, field).text = value
+    #             else:
+    #                 root.append(value.to_xml())
+
+    #     return root
 
 
 @dataclass
@@ -254,12 +286,31 @@ class Logging:
 
 
 @dataclass
-class SearchHotel:
+class SearchHotel(BaseType):
     name: str | None = field(default=None)
     type: HotelType | None = field(default=None)
     stars: Stars | None = field(default=None)
     feature: HotelFeature | None = field(default=None)
     theme: HotelTheme | None = field(default=None)
+
+    def __post_init__(self):
+        super().__init__("SearchHotel")
+
+    # def to_xml(self) -> ET.Element:
+    #     root = ET.Element(self.tag)
+    #     # ET.SubElement(root, "lang").text = self.lang
+
+    #     for field, value in vars(self).items():
+    #         if value != None:
+    #             if type(value) == int or type(value) == str:
+    #                 ET.SubElement(root, field).text = value
+    #             elif type(value) == list:
+    #                 for x in value:
+    #                     ET.SubElement(root, field).text = value
+    #             else:
+    #                 root.append(value.to_xml())
+
+    #     return root
 
 
 class HotelType(Enum):
@@ -279,108 +330,108 @@ class HotelType(Enum):
 
 
 class HotelFeature(Enum):
-    Garage = (1,)
-    Elevator = (2,)
-    Restaurant = (4,)
-    Gym = (8,)
-    Wellness = (16,)
-    Spa = (32,)
-    Breakfast = (64,)
-    Buffet = (128,)
-    OutdoorPool = (256,)
-    IndoorPool = (512,)
-    Bar = (1024,)
-    BarrierFree = (2048,)
-    Wlan = (4096,)
-    ShuttleService = (8192,)
-    Childcare = (16384,)
-    SmallPetsAllowed = (32768,)
-    BeautyFarm = (65536,)
-    CentralLocation = (262144,)
-    CoveredParking = (524288,)
-    OpenParking = (1048576,)
-    Massages = (2097152,)
-    Sauna = (4194304,)
-    SteamBath = (8388608,)
-    PublicBar = (16777216,)
-    DogsAllowed = (33554432,)
+    Garage = 1
+    Elevator = 2
+    Restaurant = 4
+    Gym = 8
+    Wellness = 16
+    Spa = 32
+    Breakfast = 64
+    Buffet = 128
+    OutdoorPool = 256
+    IndoorPool = 512
+    Bar = 1024
+    BarrierFree = 2048
+    Wlan = 4096
+    ShuttleService = 8192
+    Childcare = 16384
+    SmallPetsAllowed = 32768
+    BeautyFarm = 65536
+    CentralLocation = 262144
+    CoveredParking = 524288
+    OpenParking = 1048576
+    Massages = 2097152
+    Sauna = 4194304
+    SteamBath = 8388608
+    PublicBar = 16777216
+    DogsAllowed = 33554432
 
 
 class HotelTheme(Enum):
-    Family = (1,)
-    Wellness = (2,)
-    Hiking = (4,)
-    Motorcycle = (8,)
-    Bike = (16,)
-    Golf = (32,)
-    Riding = (64,)
-    Romantic = (128,)
-    Ski = (256,)
-    Meeting = (512,)
-    CrossCountrySkiing = (1024,)
-    Culture = (2048,)
-    Snowshoeing = (4096,)
+    Family = 1
+    Wellness = 2
+    Hiking = 4
+    Motorcycle = 8
+    Bike = 16
+    Golf = 32
+    Riding = 64
+    Romantic = 128
+    Ski = 256
+    Meeting = 512
+    CrossCountrySkiing = 1024
+    Culture = 2048
+    Snowshoeing = 4096
 
 
 @dataclass
 class SearchLocation:
-    location: list | None = field(default=None)  # number[]
-    location_lts: list | None = field(default=None)  # string[]
+    location: list | None = field(default=None)  # number[], Location ID
+    location_lts: list | None = field(default=None)  # string[], LTS Location RID
 
 
 @dataclass
 class SearchDistance:
-    latitude: int | None = field(default=None)  # number
-    longitude: int | None = field(default=None)  # number
-    radius: int | None = field(default=None)  # number
+    latitude: float  # number
+    longitude: float  # number
+    radius: int  # number
 
 
 @dataclass
 class SearchOffer:
-    arrival: str | None = field(default=None)  # Date
-    departure: str | None = field(default=None)  # Date
-    service: Board | None = field(default=None)
+    arrival: str  # Date YYYY-MM-DD
+    departure: str  # Date YYYY-MM-DD
+    service: Board
+    room: list  # Room[]
     feature: RoomFeature | None = field(default=None)
     channel_id: list | None = field(default=None)  # string[]
-    room: list | None = field(default=None)  # Room[]
     typ: SearchOfferType | None = field(default=None)
     rateplan: Rateplan | None = field(default=None)
 
 
 class SearchOfferType(Enum):
-    DefaultPricelist = (10,)
-    PeopleAge = (20,)
-    PeopleNumber = (21,)
-    Staying = (22,)
-    BookingDate = (23,)
-    Weekday = (24,)
-    NoReference = (25,)
-    SpecialPeopleAge = (50,)
-    SpecialPeopleNumber = (51,)
-    SpecialStaying = (52,)
-    SpecialBookingDate = (53,)
-    SpecialWeekday = (54,)
-    SpecialNoReference = (55,)
+    DefaultPricelist = 10
+    PeopleAge = 20
+    PeopleNumber = 21
+    Staying = 22
+    BookingDate = 23
+    Weekday = 24
+    NoReference = 25
+    SpecialPeopleAge = 50
+    SpecialPeopleNumber = 51
+    SpecialStaying = 52
+    SpecialBookingDate = 53
+    SpecialWeekday = 54
+    SpecialNoReference = 55
 
 
 class Board(Enum):
-    Without = (1,)
-    Breakfast = (2,)
-    HalfBoard = (3,)
-    FullBoard = (4,)
-    AllInclusive = (5,)
+    Without = 1
+    Breakfast = 2
+    HalfBoard = 3
+    FullBoard = 4
+    AllInclusive = 5
 
 
 class RoomFeature(Enum):
-    Balcony = (1,)
-    Terrace = (2,)
-    MiniBar = (4,)
-    Safe = (8,)
-    TV = (16,)
-    Satellite = (32,)
-    Wlan = (64,)
-    Internet = (128,)
-    BarrierFree = (512,)
+    Balcony = 1
+    Terrace = 2
+    MiniBar = 4
+    Safe = 8
+    TV = 16
+    Satellite = 32
+    Wlan = 64
+    Internet = 128
+    BarrierFree = 512
 
 
 @dataclass
@@ -393,8 +444,8 @@ class SearchLts:
 @dataclass
 class SearchSpecial:
     offerId: list | None = field(default=None)  # number[]
-    date_from: str | None = field(default=None)  # Date
-    date_to: str | None = field(default=None)  # Date
+    date_from: str | None = field(default=None)  # Date YYYY-MM-DD
+    date_to: str | None = field(default=None)  # Date YYYY-MM-DD
     theme: SpecialTheme | None = field(default=None)
     validity: Validity | None = field(default=None)
     typ: SearchSpecialType | None = field(default=None)
@@ -459,16 +510,16 @@ class SpecialTheme(Enum):
 
 @dataclass
 class SearchAvailability:
-    date_from: str | None = field(default=None)  # Date
-    date_to: str | None = field(default=None)  # Date
+    date_from: str | None = field(default=None)  # Date YYYY-MM-DD
+    date_to: str | None = field(default=None)  # Date YYYY-MM-DD
     offer_id: list | None = field(default=None)  # number[]
     room_id: list | None = field(default=None)  # number[]
 
 
 @dataclass
 class SearchPriceList:
-    date_from: str | None = field(default=None)  # Date
-    date_to: str | None = field(default=None)  # Date
+    date_from: str | None = field(default=None)  # Date YYYY-MM-DD
+    date_to: str | None = field(default=None)  # Date YYYY-MM-DD
     service: Board | None = field(default=None)
     room_id: list | None = field(default=None)  # number[]
     typ: SearchSpecialType | None = field(default=None)
@@ -536,8 +587,8 @@ class Tracking:
 
 @dataclass
 class Stars:
-    min: int | None = field(default=None)  # number
-    max: int | None = field(default=None)  # number
+    min: int | float | None = field(default=None)  # number, min can be 1
+    max: int | float | None = field(default=None)  # number, max can be 5
 
 
 @dataclass
@@ -550,18 +601,18 @@ class Address:
 
 @dataclass
 class Room:
+    room_seq: int  # number
+    person: list  # number[], 1..n Persons and their age (store only age inside tags)
     offer_id: int | None = field(default=None)  # number
     room_id: int | None = field(default=None)  # number
     service: Board | None = field(default=None)
     room_type: RoomType | None = field(default=None)
-    room_seq: int | None = field(default=None)  # number
-    person: list | None = field(default=None)  # number[]
 
 
 class RoomType(Enum):
-    All = (0,)
-    Room = (1,)
-    Apartment = (2,)
+    All = 0
+    Room = 1
+    Apartment = 2
 
 
 @dataclass
@@ -574,8 +625,8 @@ class Rateplan:
 class Validity:
     valid: Literal[0, 1] | None = field(default=None)  # 0 | 1
     offers: Literal[0, 1] | None = field(default=None)  # 0 | 1
-    arrival: str | None = field(default=None)  # Date
-    departure: str | None = field(default=None)  # Date
+    arrival: str | None = field(default=None)  # Date YYYY-MM-DD
+    departure: str | None = field(default=None)  # Date YYYY-MM-DD
     service: Board | None = field(default=None)
     room: list | None = field(default=None)  # Room[]
 

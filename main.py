@@ -8,7 +8,7 @@ from os import getenv
 import xml.dom.minidom
 
 from src.client import Client
-from src.request.types_mss import Credentials
+from src.request.types_mss import *
 
 
 def write_xml(root, filename):
@@ -46,8 +46,13 @@ if __name__ == "__main__":
         getenv("MSS_SERVICE_PASSWORD"),
         getenv("MSS_SERVICE_SOURCE"),
     )
-    client = Client(credentials, "de")
+
+    lang = "de"
+    client = Client(credentials, lang)
 
     resp = client.request(None, getenv("MSS_SERVICE_URL"), "getHotelList")
 
-    print(is_valid(resp, "407513bfca11b0591f9574b025d4caca"))
+    # print(ET.tostring(resp[0], "unicode"))
+
+    # print(is_valid(resp, "407513bfca11b0591f9574b025d4caca"))
+    print(is_valid(resp, "6ce97b163d6b035bfe90503e2e3b0da0"))  # new
