@@ -263,19 +263,19 @@ class SearchHotel:
 
 
 class HotelType(Enum):
-    Hotel = (1,)
-    SkiSchool = (2,)
-    Residence = (4,)
-    Appartment = (16,)
-    FarmVacation = (32,)
-    MountainInn = (64,)
-    CampingSite = (128,)
-    HolidayHome = (256,)
-    YouthHostel = (512,)
-    Guesthouse = (1024,)
-    Refuge = (2048,)
-    Garni = (4096,)
-    Inn = (8192,)
+    Hotel = 1
+    SkiSchool = 2
+    Residence = 4
+    Appartment = 16
+    FarmVacation = 32
+    MountainInn = 64
+    CampingSite = 128
+    HolidayHome = 256
+    YouthHostel = 512
+    Guesthouse = 1024
+    Refuge = 2048
+    Garni = 4096
+    Inn = 8192
 
 
 class HotelFeature(Enum):

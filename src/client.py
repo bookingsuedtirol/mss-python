@@ -36,7 +36,7 @@ class Client:
             headers={"Content-Type": "application/xml"},
         )
 
-        root = root = ET.fromstring(response.content)
+        root = ET.fromstring(response.content)
         error = root.find("header").find("error")
         if int(error.find("code").text) > 0:
             raise Exception(
