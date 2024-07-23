@@ -28,11 +28,17 @@ class Client:
         method = Method.get_method(method_name)
 
         # ET.SubElement(data.find("header"), "method").text = method
-        xml = method.get_base_xml(self.cred, self.lang)
+
+        root = method.get_base_xml(self.cred, self.lang)
+        if data != None:
+            # data is new child
+            root.request.search = data
+
+        # print(ET.tostring(root.to_xml(), encoding="unicode"))
 
         response = requests.post(
             url,
-            data=ET.tostring(xml, encoding="unicode"),
+            data=ET.tostring(root.to_xml(), encoding="unicode"),
             headers={"Content-Type": "application/xml"},
         )
 

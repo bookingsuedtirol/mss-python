@@ -36,4 +36,4 @@ class GetHotelList(Method):
         header = Header(cred, self.name)
         req = Request(lang)
         root = Root(header, req)
-        return root.to_xml()
+        return root  # .to_xml()
