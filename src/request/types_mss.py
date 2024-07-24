@@ -46,14 +46,6 @@ class Root(BaseType):
     def __post_init__(self):
         super().__init__("root")
 
-    # def to_xml(self):
-    #     root = ET.Element(self.tag)
-    #     # ET.SubElement(root,"") #version??
-    #     root.append(self.header.to_xml())
-    #     root.append(self.request.to_xml())
-
-    #     return root
-
 
 @dataclass()
 class Header(BaseType):
@@ -77,13 +69,6 @@ class Header(BaseType):
     def __post_init__(self):
         super().__init__("header")
 
-    # def to_xml(self) -> ET.Element:
-    #     root = ET.Element(self.tag)
-    #     root.append(self.credentials.to_xml())
-    #     ET.SubElement(root, "method").text = self.method
-
-    #     return root
-
 
 @dataclass()
 class Credentials(BaseType):
@@ -93,14 +78,6 @@ class Credentials(BaseType):
 
     def __post_init__(self):
         super().__init__("credentials")
-
-    # def to_xml(self) -> ET.Element:
-    #     root = ET.Element(self.tag)
-    #     ET.SubElement(root, "user").text = self.user
-    #     ET.SubElement(root, "password").text = self.password
-    #     ET.SubElement(root, "source").text = self.source
-
-    #     return root
 
 
 @dataclass()
@@ -122,14 +99,6 @@ class Request(BaseType):
 
     def __post_init__(self):
         super().__init__("request")
-
-    # def to_xml(self) -> ET.Element:
-    #     root = ET.Element(self.tag)
-    #     ET.SubElement(root, "user").text = self.user
-    #     ET.SubElement(root, "password").text = self.password
-    #     ET.SubElement(root, "source").text = self.source
-
-    #     return root
 
 
 @dataclass
@@ -172,25 +141,9 @@ class Search(BaseType):
     def __post_init__(self):
         super().__init__("search")
 
-    # def to_xml(self) -> ET.Element:
-    #     root = ET.Element(self.tag)
-    #     # ET.SubElement(root, "lang").text = self.lang
-
-    #     for field, value in vars(self).items():
-    #         if value != None:
-    #             if type(value) == int or type(value) == str:
-    #                 ET.SubElement(root, field).text = value
-    #             elif type(value) == list:
-    #                 for x in value:
-    #                     ET.SubElement(root, field).text = value
-    #             else:
-    #                 root.append(value.to_xml())
-
-    #     return root
-
 
 @dataclass
-class Options:
+class Options(BaseType):
     hotel_details: HotelDetails | None = field(default=None)
     offer_details: OfferDetails | None = field(default=None)
     room_details: RoomDetails | None = field(default=None)
@@ -202,6 +155,9 @@ class Options:
     get_restrictions: Literal[0, 1] | None = field(default=None)  # 0 | 1
     get_roomdetails: int | None = field(default=None)  # 0 | 1
     base_price: int | None = field(default=None)  # number
+
+    def __post_init__(self):
+        super().__init__("options")
 
 
 class HotelDetails(Enum):
@@ -275,9 +231,12 @@ class SpecialDetails(Enum):
 
 
 @dataclass
-class Order:
+class Order(BaseType):
     dir: str | None = field(default=None)
     field: str | None = field(default=None)
+
+    def __post_init__(self):
+        super().__init__("order")
 
 
 @dataclass
@@ -292,8 +251,11 @@ class Data:
 
 
 @dataclass
-class Logging:
+class Logging(BaseType):
     step: str | None = field(default=None)
+
+    def __post_init__(self):
+        super().__init__("logging")
 
 
 @dataclass
@@ -306,22 +268,6 @@ class SearchHotel(BaseType):
 
     def __post_init__(self):
         super().__init__("search_hotel")
-
-    # def to_xml(self) -> ET.Element:
-    #     root = ET.Element(self.tag)
-    #     # ET.SubElement(root, "lang").text = self.lang
-
-    #     for field, value in vars(self).items():
-    #         if value != None:
-    #             if type(value) == int or type(value) == str:
-    #                 ET.SubElement(root, field).text = value
-    #             elif type(value) == list:
-    #                 for x in value:
-    #                     ET.SubElement(root, field).text = value
-    #             else:
-    #                 root.append(value.to_xml())
-
-    #     return root
 
 
 class HotelType(Enum):

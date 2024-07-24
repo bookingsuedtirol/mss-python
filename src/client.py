@@ -4,7 +4,31 @@ import xml.etree.ElementTree as ET
 from src.request.methods import *
 from src.request.types_mss import *
 
-# TODO types which were created must somehow be able to build the XML tree
+
+# maybe recursion should be used instead of doing if checks
+def change_structure(root: Root, child: BaseType):
+    if child.tag == "root":
+        return child
+
+    if child.tag == "request":
+        root.request = child
+
+    elif child.tag == "search":
+        root.request.search = child
+
+    elif child.tag == "order":
+        root.request.order = child
+
+    elif child.tag == "options":
+        root.request.options = child
+
+    elif child.tag == "logging":
+        root.request.logging = child
+
+    elif child.tag == "header":
+        root.header = child
+
+    return root
 
 
 class Client:
@@ -16,7 +40,9 @@ class Client:
         self.cred = cred
         self.lang = Search(lang)
 
-    def request(self, data: ET.Element, url: str, method_name: str) -> ET.Element:
+    def request(
+        self, url: str, method_name: str, data: ET.Element | None = None
+    ) -> ET.Element:
         """
         Makes a post request to the given URL with the specified data and method name.
 
@@ -27,14 +53,12 @@ class Client:
 
         method = Method.get_method(method_name)
 
-        # ET.SubElement(data.find("header"), "method").text = method
-
         root = method.get_base_xml(self.cred, self.lang)
-        if data != None:
-            # data is new child
-            root.request.search = data
 
-        # print(ET.tostring(root.to_xml(), encoding="unicode"))
+        if data != None:
+            root = change_structure(root, data)
+
+        print(ET.tostring(root.to_xml(), encoding="unicode"))
 
         response = requests.post(
             url,
