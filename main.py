@@ -104,7 +104,7 @@ if __name__ == "__main__":
 
     # search_items = get_search_items(lang)
     order_items = get_order_items()
-    resp = client.request(getenv("MSS_SERVICE_URL"), "getHotelList", order_items)
+    resp = client.request(getenv("MSS_SERVICE_URL"), "getHotelList", order_items, True)
 
     # client.addSearch(search_items)
 

@@ -41,7 +41,11 @@ class Client:
         self.lang = Search(lang)
 
     def request(
-        self, url: str, method_name: str, data: ET.Element | None = None
+        self,
+        url: str,
+        method_name: str,
+        data: ET.Element | None = None,
+        _print: True | False = False,
     ) -> ET.Element:
         """
         Makes a post request to the given URL with the specified data and method name.
@@ -58,7 +62,8 @@ class Client:
         if data != None:
             root = change_structure(root, data)
 
-        print(ET.tostring(root.to_xml(), encoding="unicode"))
+        if _print == True:
+            print(ET.tostring(root.to_xml(), encoding="unicode"))
 
         response = requests.post(
             url,

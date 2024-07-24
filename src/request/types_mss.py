@@ -1,6 +1,6 @@
 from __future__ import annotations
 from dataclasses import dataclass, field
-from enum import Enum
+from enum import Enum, IntFlag
 from typing import Literal
 import xml.etree.ElementTree as ET
 from abc import ABC  # , abstractmethod
@@ -9,17 +9,21 @@ from abc import ABC  # , abstractmethod
 
 
 def get_child_xml(value, field, root):
-    if value != None and field != "tag":
-        if type(value) == int or type(value) == float:
+    match value:
+        case None:
+            return
+        case int() | float():
             ET.SubElement(root, field).text = str(value)
-        elif type(value) == str:
+        case str():
+            if field == "tag":
+                return
             ET.SubElement(root, field).text = value
-        elif type(value) == list:
+        case list():
             for x in value:
                 get_child_xml(x, field, root)
-        elif isinstance(value, Enum):
+        case Enum():
             ET.SubElement(root, field).text = str(value.value)
-        else:
+        case _:
             root.append(value.to_xml())
 
 
@@ -168,7 +172,7 @@ class Options(BaseType):
         super().__init__("options")
 
 
-class HotelDetails(Enum):
+class HotelDetails(IntFlag):
     BasicInfo = 1
     Themes = 2
     HotelFacilities = 4
@@ -194,7 +198,7 @@ class HotelDetails(Enum):
     # SourceData = 2097152
 
 
-class OfferDetails(Enum):
+class OfferDetails(IntFlag):
     BasicInfo = 1
     RoomCode = 4
     RoomTitle = 8
@@ -421,16 +425,16 @@ class Board(Enum):
     AllInclusive = "5"
 
 
-class RoomFeature(Enum):
-    Balcony = "1"
-    Terrace = "2"
-    MiniBar = "4"
-    Safe = "8"
-    TV = "16"
-    Satellite = "32"
-    Wlan = "64"
-    Internet = "128"
-    BarrierFree = "512"
+class RoomFeature(IntFlag):
+    Balcony = 1
+    Terrace = 2
+    MiniBar = 4
+    Safe = 8
+    TV = 16
+    Satellite = 32
+    Wlan = 64
+    Internet = 128
+    BarrierFree = 512
 
 
 @dataclass
