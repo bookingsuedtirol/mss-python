@@ -55,7 +55,7 @@ class Client:
         method: Method to be executed by the service
         """
 
-        method = Method.get_method(method_name)
+        method = Method(method_name)
 
         root = method.get_base_xml(self.cred, self.lang)
 
