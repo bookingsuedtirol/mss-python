@@ -83,9 +83,9 @@ def get_search_items(lang):
 
 
 def get_order_items():
-    order = Order()
-    options = Options()
-    logging = Logging()
+    order = Order(Direction.Ascending, Field.Name)
+    options = Options()  # HotelDetails.BasicInfo, OfferDetails.BasicInfo)
+    logging = Logging(Step.Search)
 
     req = Request(Search("de"), options, order, logging)
 
@@ -115,5 +115,6 @@ if __name__ == "__main__":
     # print(ET.tostring(resp[0], "unicode"))
 
     # print(is_valid(resp, "407513bfca11b0591f9574b025d4caca"))
-    print(is_valid(resp, "6ce97b163d6b035bfe90503e2e3b0da0"))  # new
+    # print(is_valid(resp, "6ce97b163d6b035bfe90503e2e3b0da0"))  # new
     # print(is_valid(resp, "8b21849ef48659f7494383df17e4a962"))  # neww
+    print(is_valid(resp, "3dd3606950a1ab770c89a18a4a385b3f"))  # newww

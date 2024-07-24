@@ -146,61 +146,72 @@ class Search(BaseType):
 class Options(BaseType):
     hotel_details: HotelDetails | None = field(default=None)
     offer_details: OfferDetails | None = field(default=None)
-    room_details: RoomDetails | None = field(default=None)
-    special_details: SpecialDetails | None = field(default=None)
-    pricelist_details: PriceListDetails | None = field(default=None)
-    picture_date: str | None = field(default=None)
-    lts_bookable: int | None = field(default=None)  # number
-    get_availability: Literal[0, 1] | None = field(default=None)  # 0 | 1
-    get_restrictions: Literal[0, 1] | None = field(default=None)  # 0 | 1
-    get_roomdetails: int | None = field(default=None)  # 0 | 1
-    base_price: int | None = field(default=None)  # number
+
+    picture_date: str | None = field(default=None)  # Date
+    lts_bookable: int | None = field(default=None)  # number, 0|1|2
+
+    base_price: int | None = field(default=None)  # number, 0|1
+
+    # field is in easychannel but not in nodejs
+    only_available: Literal[0, 1] | None = field(default=None)  # 0 | 1
+
+    # below fields are in nodejs but not in easychannel.it?
+    # room_details: RoomDetails | None = field(default=None)
+    # special_details: SpecialDetails | None = field(default=None)
+    # pricelist_details: PriceListDetails | None = field(default=None)
+
+    # get_availability: Literal[0, 1] | None = field(default=None)  # 0 | 1
+    # get_restrictions: Literal[0, 1] | None = field(default=None)  # 0 | 1
+    # get_roomdetails: int | None = field(default=None)  # 0 | 1
 
     def __post_init__(self):
         super().__init__("options")
 
 
 class HotelDetails(Enum):
-    BasicInfo = (1,)
-    Themes = (2,)
-    HotelFacilities = (4,)
-    ShortDescription = (8,)
-    FullDescription = (16,)
-    GeographicInformation = (32,)
-    Coordinates = (64,)
-    Address = (128,)
-    Contacts = (256,)
-    PaymentOptionsForOnlineBooking = (512,)
-    PaymentOptionsAtHotel = (1024,)
-    Logo = (2048,)
-    HeaderImages = (4096,)
-    Gallery = (8192,)
-    HotelMatching = (16384,)
-    GeographicalInformationAsText = (32768,)
-    HotelNavigatorData = (65536,)
-    DetailedHotelFacilities = (131072,)
-    SalesPoint = (524288,)
-    LtsSpecificParameters = (262144,)
-    CheckInOut = (1048576,)
-    SourceData = (2097152,)
+    BasicInfo = 1
+    Themes = 2
+    HotelFacilities = 4
+    ShortDescription = 8
+    FullDescription = 16
+    GeographicInformation = 32
+    Coordinates = 64
+    Address = 128
+    Contacts = 256
+    PaymentOptionsForOnlineBooking = 512
+    PaymentOptionsAtHotel = 1024
+    Logo = 2048
+    HeaderImages = 4096
+    Gallery = 8192
+    HotelMatching = 16384
+    GeographicalInformationAsText = 32768
+    HotelNavigatorData = 65536  # should be hotel reviews instead?
+    DetailedHotelFacilities = 131072
+    SalesPoint = 524288
+    LtsSpecificParameters = 262144
+    CouponServiceData = 16777216
+    # CheckInOut = 1048576
+    # SourceData = 2097152
 
 
 class OfferDetails(Enum):
-    BasicInfo = (1,)
-    RoomCode = (4,)
-    RoomTitle = (8,)
-    PriceDetails = (16,)
-    RoomImages = (32,)
-    RoomFacilitiesFilter = (64,)
-    RoomDescription = (256,)
-    IncludedServices = (1024,)
-    AdditionalServices = (2048,)
-    RoomFacilitiesDetails = (4096,)
-    PriceImages = (8192,)
-    Themes = (16384,)
-    RoomFeatures = (32768,)
-    CancelPolicies = (262144,)
-    PaymentTerms = (1048576,)
+    BasicInfo = 1
+    RoomCode = 4
+    RoomTitle = 8
+    PriceDetails = 16
+    RoomImages = 32
+    RoomFacilitiesFilter = 64
+    RoomDescription = 256
+    IncludedServices = 1024
+    AdditionalServices = 2048
+    RoomFacilitiesDetails = 4096
+    PriceImages = 8192
+    Themes = 16384
+    RoomFeatures = 32768
+
+    # not in easychannel
+    # CancelPolicies = 262144
+    # PaymentTerms = 1048576
 
 
 class PriceListDetails(Enum):
@@ -232,11 +243,24 @@ class SpecialDetails(Enum):
 
 @dataclass
 class Order(BaseType):
-    dir: str | None = field(default=None)
-    field: str | None = field(default=None)
+    dir: Direction | None = field(default=None)
+    field: Field | None = field(default=None)
 
     def __post_init__(self):
         super().__init__("order")
+
+
+class Field(Enum):
+    ValidityStart = "valid_start"
+    ValidityEnd = "valid_end"
+    Random = "rand"
+    Stars = "stars"
+    Name = "name"
+
+
+class Direction(Enum):
+    Ascending = "asc"
+    Descending = "desc"
 
 
 @dataclass
@@ -256,6 +280,18 @@ class Logging(BaseType):
 
     def __post_init__(self):
         super().__init__("logging")
+
+
+class Step(Enum):
+    Search = "search"
+    SearchOffer = "search_offer"
+    SearchDetails = "search_details"
+    View = "view"
+    ViewOffer = "view_offer"
+    Step1 = "step_1"
+    Step2 = "step_2"
+    Step3 = "step_3"
+    Step4 = "step_4"
 
 
 @dataclass
