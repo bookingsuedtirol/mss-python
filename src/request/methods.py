@@ -7,8 +7,25 @@ import xml.etree.ElementTree as ET
 from src.request.types_mss import *  # might need change
 
 
+class MethodName(Enum):
+    GetHotelList = "getHotelList"
+    GetSpecialList = "getSpecialList"
+    GetRoomList = "getRoomList"
+    GetPriceList = "getPriceList"
+    GetRoomAvailability = "getRoomAvailability"
+    PrepareBooking = "prepareBooking"
+    GetBooking = "getBooking"
+    CancelBooking = "cancelBooking"
+    CreateInquiry = "createInquiry"
+    GetUserSources = "getUserSources"
+    GetLocationList = "getLocationList"
+    GetMasterpackagesList = "getMasterpackagesList"
+    GetThemeList = "getThemeList"
+    ValidateCoupon = "validateCoupon"
+
+
 class Method:  # (ABC):
-    def __init__(self, name: str):
+    def __init__(self, name: MethodName):
         self.name = name
 
     def get_base_xml(self, cred: Credentials, lang: Search) -> ET.Element:

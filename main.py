@@ -7,6 +7,7 @@ import xml.dom.minidom
 
 from src.client import Client
 from src.request.types_mss import *
+from src.request.methods import MethodName
 
 
 def write_xml(root, filename):
@@ -87,7 +88,10 @@ def get_order_items():
     # )  # HotelDetails.BasicInfo, OfferDetails.BasicInfo)
     # # logging = Logging(Step.Search)
 
-    req = Request(Search("de", id=10038), Options(room_details=1))
+    req = Request(
+        Search("de", transaction_id="", booking_id="", guest_email=""),
+        # Options(room_details=1),
+    )
 
     return req
 
@@ -112,41 +116,13 @@ if __name__ == "__main__":
     )
     lang = "de"
     client = Client(credentials, lang)
-
-    # search_items = get_search_items(lang)
     req = get_order_items()
-    # spec = search_special()
-    # req.search.search_special = spec
     resp = client.request(
         getenv("MSS_SERVICE_URL"),
-        "getSpecialList",
+        MethodName.GetBooking,
         req,
         _print=True,  # , order_items, True
     )
 
-    # client.addSearch(search_items)
-
-    # print(ET.tostring(order_items.to_xml(), "unicode"))
-
-    # print(ET.tostring(resp[0], "unicode"))
-
-    # print(
-    #     is_valid(resp, "407513bfca11b0591f9574b025d4caca")
-    # )  # only request.search.lang parameter
-
-    # print(
-    #     is_valid(resp, "6ce97b163d6b035bfe90503e2e3b0da0")
-    # )  # request.search.lang + version
-
-    # print(is_valid(resp, "8b21849ef48659f7494383df17e4a962"))  # neww
-    # print(is_valid(resp, "3dd3606950a1ab770c89a18a4a385b3f"))  # newww
-
-    # print(
-    #     is_valid(resp, "90adf398c886677f8f94383b1b590e8c")
-    # )  # ezchannel getHotelListByFilter
-
-    # print(
-    #     is_valid(resp, "77cef25d9ec47a7d94400390d9cae085")
-    # )  # ezchannel getSpecialList
-
-    print(is_valid(resp, "94831a3cac8156812e1eada6244bdce0"))  # ezchannel getRoomList
+    # There is no documentation about this method, so I just checked that the XML request is done correctly
+    # I tried playing in insomnia with different values, but I couldn't manage to find correct transaction_id or guest_email values
