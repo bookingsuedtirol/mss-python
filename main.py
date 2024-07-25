@@ -89,7 +89,7 @@ def get_order_items():
     # # logging = Logging(Step.Search)
 
     req = Request(
-        Search("de", transaction_id="", booking_id="", guest_email=""),
+        Search("de", booking_id="0", guest_email="0"),
         # Options(room_details=1),
     )
 
@@ -119,7 +119,7 @@ if __name__ == "__main__":
     req = get_order_items()
     resp = client.request(
         getenv("MSS_SERVICE_URL"),
-        MethodName.GetBooking,
+        MethodName.CancelBooking,
         req,
         _print=True,  # , order_items, True
     )

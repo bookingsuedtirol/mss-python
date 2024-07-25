@@ -268,7 +268,7 @@ class Direction(Enum):
 
 
 @dataclass
-class Data:
+class Data(BaseType):
     guest: Guest | None = field(default=None)
     company: Company | None = field(default=None)
     payment: Payment | None = field(default=None)
@@ -276,6 +276,21 @@ class Data:
     details: Details | None = field(default=None)
     form: Form | None = field(default=None)
     tracking: Tracking | None = field(default=None)
+    # insurance: Ins
+    storno_reason: StornoReason | None = field(default=None)
+    storno_reason_text: str | None = field(default=None)
+
+    def __post_init__(self):
+        super().__init__("data")
+
+
+class StornoReason(Enum):
+    Unknown = 0
+    GuestNotAvailable = 1
+    AccomodationRequestedToCancel = 2
+    GuestAnotherDestination = 3
+    GuestAnotherAccomodation = 4
+    Other = 99
 
 
 @dataclass
