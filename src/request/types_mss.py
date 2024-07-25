@@ -161,7 +161,7 @@ class Options(BaseType):
 
     # below fields are in nodejs but not in easychannel.it?
     # room_details: RoomDetails | None = field(default=None)
-    # special_details: SpecialDetails | None = field(default=None)
+    special_details: SpecialDetails | None = field(default=None)
     # pricelist_details: PriceListDetails | None = field(default=None)
 
     # get_availability: Literal[0, 1] | None = field(default=None)  # 0 | 1
@@ -235,14 +235,14 @@ class RoomDetails(Enum):
     RoomNumbers = (65536,)
 
 
-class SpecialDetails(Enum):
-    BasicInfo = (1,)
-    Title = (2,)
-    Descriptions = (4,)
-    Seasons = (8,)
-    Images = (16,)
-    Themes = (32,)
-    IncludedServices = (64,)
+class SpecialDetails(IntFlag):
+    BasicInfo = 1
+    Title = 2
+    Descriptions = 4
+    Seasons = 8
+    Images = 16
+    Themes = 32
+    IncludedServices = 64
 
 
 @dataclass
@@ -418,11 +418,11 @@ class SearchOfferType(Enum):
 
 
 class Board(Enum):
-    Without = "1"
-    Breakfast = "2"
-    HalfBoard = "3"
-    FullBoard = "4"
-    AllInclusive = "5"
+    Without = 1
+    Breakfast = 2
+    HalfBoard = 3
+    FullBoard = 4
+    AllInclusive = 5
 
 
 class RoomFeature(IntFlag):
@@ -448,70 +448,110 @@ class SearchLts(BaseType):
 
 
 @dataclass
-class SearchSpecial:
-    offerId: list | None = field(default=None)  # number[]
+class SearchSpecial(BaseType):
+    offer_id: list | None = field(default=None)  # number[]
     date_from: str | None = field(default=None)  # Date YYYY-MM-DD
     date_to: str | None = field(default=None)  # Date YYYY-MM-DD
-    theme: SpecialTheme | None = field(default=None)
+    theme: list | None = field(default=None)  # array of SpecialTheme
     validity: Validity | None = field(default=None)
     typ: SearchSpecialType | None = field(default=None)
     premium: SearchSpecialPremium | None = field(default=None)
 
+    def __post_init__(self):
+        super().__init__("search_special")
+
 
 class SearchSpecialType(Enum):
-    PriceLists = (0,)
-    Packages = (1,)
-    Specials = (2,)
-    ShortLongStays = (4,)
+    PriceLists = 0
+    Packages = 1
+    Specials = 2
+    ShortLongStays = 4
 
 
-class SearchSpecialPremium(Enum):
-    FamilyHotelsPremium = (2,)
-    VinumHotelsPremium = (4,)
-    SüdtirolBalancePremium = (8,)
-    VitalpinaDurchatmen = (16,)
-    VitalpinaWohlfühlen = (32,)
-    VitalpinaErnährung = (64,)
-    VitalpinaAktiv = (128,)
-    VitalpinaPremium = (256,)
-    BikehotelsMountainbike = (512,)
-    BikehotelsBikeTouringEBike = (1024,)
-    BikehotelsRoadbike = (2048,)
-    BikehotelsPremium = (4096,)
-    ArchitectureDays = (8192,)
-    VinumHotels = (16384,)
-    FamilyHotels = (32768,)
-    FamilyHotelsNatureDetective = (65536,)
-    FamilyHotelsNatureDetectiveWinter = (131072,)
+class SearchSpecialPremium(IntFlag):
+    FamilyHotelsPremium = 2
+    VinumHotelsPremium = 4
+    SüdtirolBalancePremium = 8
+    VitalpinaDurchatmen = 16
+    VitalpinaWohlfühlen = 32
+    VitalpinaErnährung = 64
+    VitalpinaAktiv = 128
+    VitalpinaPremium = 256
+    BikehotelsMountainbike = 512
+    BikehotelsBikeTouringEBike = 1024
+    BikehotelsRoadbike = 2048
+    BikehotelsPremium = 4096
+    ArchitectureDays = 8192
+    VinumHotels = 16384
+    FamilyHotels = 32768
+    FamilyHotelsNatureDetective = 65536
+    FamilyHotelsNatureDetectiveWinter = 131072
 
 
 class SpecialTheme(Enum):
-    Hiking = (1,)
-    Cycling = (2,)
-    Family = (4,)
-    Wellness = (8,)
-    Food = (16,)
-    Golf = (32,)
-    Culture = (64,)
-    Motorsport = (128,)
-    CarFree = (256,)
-    SkiSnowboard = (512,)
-    SummerActivities = (1024,)
-    Events = (2048,)
-    ChristmasMarkets = (4096,)
-    ActiveWinter = (8192,)
-    Vitalpina = (16384,)
-    VitalpinaBreathe = (32768,)
-    BikeHotelsEBike = (65536,)
-    BikeHotelsFreeride = (131072,)
-    BikeHotelsMountainbike = (524288,)
-    BikeHotelsBikeTours = (1048576,)
-    BikeHotelsRacingBike = (2097152,)
-    FamilyHotels = (4194304,)
-    FamilyHotelsNatureDetective = (8388608,)
-    FamilyHotel = (33554432,)
-    FamilyHotelsNatureDetectiveSummer = (67108864,)
-    FamilyHotelsNatureDetectiveWinter = (134217728,)
+    ThemeIDHiking = 1
+    ThemeIDCyclingMountainbike = 2
+    ThemeIDFamily = 3
+    ThemeIDWellnessHealth = 4
+    ThemeIDFoodAndDrink = 5
+    ThemeIDGolf = 6
+    ThemeIDCulture = 7
+    ThemeIDMotorsport = 8
+    ThemeIDCarFreeHolidays = 9
+    ThemeIDSkiSnowboard = 10
+    ThemeIDSummerActivities = 11
+    ThemeIDEvents = 12
+    ThemeIDChristmasMarkets = 13
+    ThemeIDActiveWinter = 14
+    ThemeIDVitalpina = 15
+    ThemeIDVitalpinaBreathe = 16
+    ThemeIDBikeHotelsEBike = 17
+    ThemeIDBikeHotelsFreeride = 18
+    ThemeIDBikeHotelsMountainbike = 20
+    ThemeIDBikeHotelsBikeTours = 21
+    ThemeIDBikeHotelsRacingBike = 22
+    ThemeIDFamilyHotels = 23
+    ThemeIDFamilyHotelsNatureDetective = 24
+    ThemeIDFamilyHotel = 26
+    ThemeIDNatureDetectivSummer = 27
+    ThemeIDNatureDetectivWinter = 28
+    ThemeIDEcologicHoliday = 79
+    ThemeIDHorseBackRiding = 80
+    ThemeIDLuxuryHoliday = 81
+    ThemeIDPetsFriendlyHoliday = 82
+    ThemeIDRoadBike = 83
+    ThemeIDRomanticHoliday = 84
+    ThemeIDWine = 85
+    ThemeIDBicycleTouring = 86
+    ThemeIDEBike = 87
+
+    ##These values were theme_bit
+    # Hiking = 1
+    # Cycling = 2
+    # Family = 4
+    # Wellness = 8
+    # Food = 16
+    # Golf = 32
+    # Culture = 64
+    # Motorsport = 128
+    # CarFree = 256
+    # SkiSnowboard = 512
+    # SummerActivities = 1024
+    # Events = 2048
+    # ChristmasMarkets = 4096
+    # ActiveWinter = 8192
+    # Vitalpina = 16384
+    # VitalpinaBreathe = 32768
+    # BikeHotelsEBike = 65536
+    # BikeHotelsFreeride = 131072
+    # BikeHotelsMountainbike = 524288
+    # BikeHotelsBikeTours = 1048576
+    # BikeHotelsRacingBike = 2097152
+    # FamilyHotels = 4194304
+    # FamilyHotelsNatureDetective = 8388608
+    # FamilyHotel = 33554432
+    # FamilyHotelsNatureDetectiveSummer = 67108864
+    # FamilyHotelsNatureDetectiveWinter = 134217728
 
 
 @dataclass
@@ -639,13 +679,16 @@ class Rateplan(BaseType):
 
 
 @dataclass
-class Validity:
-    valid: Literal[0, 1] | None = field(default=None)  # 0 | 1
+class Validity(BaseType):
+    valid: Literal[0, 1]  # 0 | 1
     offers: Literal[0, 1] | None = field(default=None)  # 0 | 1
     arrival: str | None = field(default=None)  # Date YYYY-MM-DD
     departure: str | None = field(default=None)  # Date YYYY-MM-DD
     service: Board | None = field(default=None)
     room: list | None = field(default=None)  # Room[]
+
+    def __post_init__(self):
+        super().__init__("validity")
 
 
 def getHotelList_base_xml(root: Root, header: Header):

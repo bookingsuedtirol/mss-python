@@ -81,18 +81,28 @@ def get_search_items(lang):
 
 
 def get_order_items():
-    order = Order(Direction.Ascending, Field.Name)
-    options = Options()  # HotelDetails.BasicInfo, OfferDetails.BasicInfo)
-    logging = Logging(Step.Search)
+    order = Order(Direction.Ascending, Field.ValidityEnd)
+    options = Options(
+        special_details=SpecialDetails.BasicInfo, offer_details=0, hotel_details=0
+    )  # HotelDetails.BasicInfo, OfferDetails.BasicInfo)
+    # logging = Logging(Step.Search)
 
-    req = Request(Search("de"), options, order, logging)
+    req = Request(Search("de"), options, order)
 
     return req
 
 
+def search_special():
+    return SearchSpecial(
+        typ=1,
+        validity=Validity(
+            0, 0, "2024-07-25", "2024-08-01", Board.HalfBoard, [Room(1, [18, 18])]
+        ),
+    )
+
+
 if __name__ == "__main__":
     # TODO function to add children to xml in client
-    # TODO request.orders, request.options, request.logging
 
     credentials = Credentials(
         getenv("MSS_SERVICE_USERNAME"),
@@ -103,8 +113,15 @@ if __name__ == "__main__":
     client = Client(credentials, lang)
 
     # search_items = get_search_items(lang)
-    order_items = get_order_items()
-    resp = client.request(getenv("MSS_SERVICE_URL"), "getHotelList", order_items, True)
+    req = get_order_items()
+    spec = search_special()
+    req.search.search_special = spec
+    resp = client.request(
+        getenv("MSS_SERVICE_URL"),
+        "getHotelListByFilter",
+        req,
+        _print=True,  # , order_items, True
+    )
 
     # client.addSearch(search_items)
 
@@ -112,7 +129,21 @@ if __name__ == "__main__":
 
     # print(ET.tostring(resp[0], "unicode"))
 
-    # print(is_valid(resp, "407513bfca11b0591f9574b025d4caca"))
-    # print(is_valid(resp, "6ce97b163d6b035bfe90503e2e3b0da0"))  # new
+    # print(
+    #     is_valid(resp, "407513bfca11b0591f9574b025d4caca")
+    # )  # only request.search.lang parameter
+
+    # print(
+    #     is_valid(resp, "6ce97b163d6b035bfe90503e2e3b0da0")
+    # )  # request.search.lang + version
+
     # print(is_valid(resp, "8b21849ef48659f7494383df17e4a962"))  # neww
-    print(is_valid(resp, "3dd3606950a1ab770c89a18a4a385b3f"))  # newww
+    # print(is_valid(resp, "3dd3606950a1ab770c89a18a4a385b3f"))  # newww
+
+    # print(
+    #     is_valid(resp, "90adf398c886677f8f94383b1b590e8c")
+    # )  # ezchannel getHotelListByFilter
+
+    print(
+        is_valid(resp, "77cef25d9ec47a7d94400390d9cae085")
+    )  # ezchannel getSpecialList
