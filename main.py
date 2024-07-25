@@ -81,13 +81,13 @@ def get_search_items(lang):
 
 
 def get_order_items():
-    order = Order(Direction.Ascending, Field.ValidityEnd)
-    options = Options(
-        special_details=SpecialDetails.BasicInfo, offer_details=0, hotel_details=0
-    )  # HotelDetails.BasicInfo, OfferDetails.BasicInfo)
-    # logging = Logging(Step.Search)
+    # order = Order(Direction.Ascending, Field.ValidityEnd)
+    # options = Options(
+    #     special_details=SpecialDetails.BasicInfo, offer_details=0, hotel_details=0
+    # )  # HotelDetails.BasicInfo, OfferDetails.BasicInfo)
+    # # logging = Logging(Step.Search)
 
-    req = Request(Search("de"), options, order)
+    req = Request(Search("de", id=10038), Options(room_details=1))
 
     return req
 
@@ -103,6 +103,7 @@ def search_special():
 
 if __name__ == "__main__":
     # TODO function to add children to xml in client
+    # Does order matter when sending XML? Reordering children gives different result ID.
 
     credentials = Credentials(
         getenv("MSS_SERVICE_USERNAME"),
@@ -114,11 +115,11 @@ if __name__ == "__main__":
 
     # search_items = get_search_items(lang)
     req = get_order_items()
-    spec = search_special()
-    req.search.search_special = spec
+    # spec = search_special()
+    # req.search.search_special = spec
     resp = client.request(
         getenv("MSS_SERVICE_URL"),
-        "getHotelListByFilter",
+        "getSpecialList",
         req,
         _print=True,  # , order_items, True
     )
@@ -144,6 +145,8 @@ if __name__ == "__main__":
     #     is_valid(resp, "90adf398c886677f8f94383b1b590e8c")
     # )  # ezchannel getHotelListByFilter
 
-    print(
-        is_valid(resp, "77cef25d9ec47a7d94400390d9cae085")
-    )  # ezchannel getSpecialList
+    # print(
+    #     is_valid(resp, "77cef25d9ec47a7d94400390d9cae085")
+    # )  # ezchannel getSpecialList
+
+    print(is_valid(resp, "94831a3cac8156812e1eada6244bdce0"))  # ezchannel getRoomList

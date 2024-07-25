@@ -160,7 +160,7 @@ class Options(BaseType):
     only_available: Literal[0, 1] | None = field(default=None)  # 0 | 1
 
     # below fields are in nodejs but not in easychannel.it?
-    # room_details: RoomDetails | None = field(default=None)
+    room_details: RoomDetails | None = field(default=None)
     special_details: SpecialDetails | None = field(default=None)
     # pricelist_details: PriceListDetails | None = field(default=None)
 
@@ -224,15 +224,15 @@ class PriceListDetails(Enum):
     Seasons = (4194304,)
 
 
-class RoomDetails(Enum):
-    BasicInfo = (4,)
-    Title = (8,)
-    RoomImages = (32,)
-    RoomFacilitiesFilter = (64,)
-    RoomDescription = (256,)
-    RoomFacilitiesDetails = (4096,)
-    RoomFeatures = (32768,)
-    RoomNumbers = (65536,)
+class RoomDetails(IntFlag):
+    BasicInfo = 4
+    Title = 8
+    RoomImages = 32
+    RoomFacilitiesFilter = 64
+    RoomDescription = 256
+    RoomFacilitiesDetails = 4096
+    RoomFeatures = 32768
+    RoomNumbers = 65536
 
 
 class SpecialDetails(IntFlag):
