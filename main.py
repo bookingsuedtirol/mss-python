@@ -37,50 +37,6 @@ def is_valid(xml: ET.Element, id=None, filename=None, file=False, print=False):
     return xml.find("header").find("result_id").text == expectedResultId.text
 
 
-# right now im filling XML's request/search parameters
-# check this out for XML values  https://easychannel.it/mss/docs/index.php?VERSION=2.0&function=getHotelList&mode=0
-def get_search_items(lang):
-    # ids of hotels, js type is numbers[], what should it store?
-    ids = ["10038"]  # or maybe a list instead?
-
-    id_ofchannel = "hgv"
-
-    search_hotel = SearchHotel(
-        "name", HotelType.Hotel, Stars("1", "5"), HotelFeature.Bar, HotelTheme.Family
-    )
-
-    search_location = SearchLocation(
-        [], []
-    )  # stores a list of numbers and list of strings
-
-    search_offer = SearchOffer(
-        "2024-07-23",
-        "2024-07-30",
-        Board.HalfBoard,
-        [Room("1", ["18", "18"])],
-        RoomFeature.Balcony,
-        ["hgv", "bok", "htl"],
-        SearchOfferType.NoReference,
-        Rateplan("1", "hgv"),
-    )
-
-    # search_distance = SearchDistance()
-
-    # room_type = RoomType.Apartment
-    # feature_id =
-
-    search_lts = SearchLts()
-
-    return Search(
-        lang,
-        id=ids,
-        search_hotel=search_hotel,
-        search_location=search_location,
-        search_offer=search_offer,
-        search_lts=search_lts,
-    )
-
-
 def get_order_items():
     # order = Order(Direction.Ascending, Field.ValidityEnd)
     # options = Options(
@@ -89,20 +45,83 @@ def get_order_items():
     # # logging = Logging(Step.Search)
 
     req = Request(
-        Search("de", booking_id="0", guest_email="0"),
+        Search(
+            "de",
+            "xxx",
+            "agent",
+            search_offer=SearchOffer(
+                room=Room(
+                    room_id=127,
+                    room_type=RoomType.Room,
+                    offer_id=41,
+                    person=[18, 18, 5],
+                )
+            ),
+        ),
+        data=Data(
+            Guest(
+                firstname="Thomas",
+                lastname="Alber",
+                email="thomas.alber@yanovis.com",
+                address=Address(),
+            ),
+            Company("Easymailer", "00123456", "123", Address()),
+            Payment(PaymentMethod.AccommodationPayment, 0),
+            "",
+            Details([ExtraPrice(64, 1)]),
+            Form(
+                "http://demo.easymailer.it/success.htm",
+                "http://demo.easymailer.it/failure.htm",
+            ),
+            Tracking(),
+        ),
         # Options(room_details=1),
     )
 
     return req
 
 
-def search_special():
-    return SearchSpecial(
-        typ=1,
-        validity=Validity(
-            0, 0, "2024-07-25", "2024-08-01", Board.HalfBoard, [Room(1, [18, 18])]
+def test1():
+    # test getHotelList
+    return Request(
+        Search(
+            "de",
+            SearchOffer(
+                "b",
+                "c",
+                Board.HalfBoard,
+                [
+                    Room(1, [18, 18], room_type=RoomType.All),
+                    Room(2, [1], room_type=RoomType.All),
+                    Room(3, [1], room_type=RoomType.All),
+                ],
+                typ=10,
+            ),
+        ),
+        Options(picture_date="2000-01-01"),
+    )
+
+
+def test2(result_id):
+    # test prepare booking
+    search = Search(
+        "de",  # on prepareBooking language apparently language isn't required?
+        result_id=result_id,
+        agent="someAgent",
+        search_offer=SearchOffer(
+            room=Room(room_id="roomid", offer_id="offerid", person=[18, 18])
         ),
     )
+
+    data = Data(
+        Guest("Rubin", "Canaj", "rcasfaf@asf.com"),
+        form=Form(
+            "http://easychannel.it/mss/docs/pay_view.php?VERSION=2.0",
+            "http://easychannel.it/mss/docs/pay_view.php?VERSION=2.0",
+        ),
+    )
+
+    return Request(search, data=data)
 
 
 if __name__ == "__main__":
@@ -116,10 +135,14 @@ if __name__ == "__main__":
     )
     lang = "de"
     client = Client(credentials, lang)
-    req = get_order_items()
+
+    req = test2(
+        "da4aaa48b52ce349f2e117b3137f985e"
+    )  # result id must have search.hotel defined, and the corresponding hotel must be bookable
+
     resp = client.request(
         getenv("MSS_SERVICE_URL"),
-        MethodName.CancelBooking,
+        MethodName.PrepareBooking,
         req,
         _print=True,  # , order_items, True
     )

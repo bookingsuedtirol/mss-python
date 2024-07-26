@@ -107,7 +107,7 @@ class Request(BaseType):
 
 @dataclass
 class Search(BaseType):
-    lang: str = Literal["de", "it", "en", "es", "fr", "ru", "da"]
+    lang: Literal["de", "it", "en", "es", "fr", "ru", "da"]
     result_id: str | None = field(default=None)
 
     agent: str | None = field(default=None)
@@ -132,7 +132,7 @@ class Search(BaseType):
 
     in_: int | None = field(default=None)  # number[]
 
-    id_ofchannel: str | None = field(default=None)
+    id_ofchannel: Literal["hgv", "lts", "esy"] | None = field(default=None)
 
     transaction_id: str | None = field(default=None)
 
@@ -152,7 +152,7 @@ class Options(BaseType):
     offer_details: OfferDetails | None = field(default=None)
 
     picture_date: str | None = field(default=None)  # Date
-    lts_bookable: int | None = field(default=None)  # number, 0|1|2
+    lts_bookable: Literal[0, 1, 2] | None = field(default=None)  # number, 0|1|2
 
     base_price: int | None = field(default=None)  # number, 0|1
 
@@ -183,19 +183,22 @@ class HotelDetails(IntFlag):
     Address = 128
     Contacts = 256
     PaymentOptionsForOnlineBooking = 512
-    PaymentOptionsAtHotel = 1024
+    PaymentOptionsAtHotel = 1024  #
     Logo = 2048
     HeaderImages = 4096
     Gallery = 8192
     HotelMatching = 16384
     GeographicalInformationAsText = 32768
-    HotelNavigatorData = 65536  # should be hotel reviews instead?
+    HotelReviews = 65536  # different name in GO
     DetailedHotelFacilities = 131072
     SalesPoint = 524288
     LtsSpecificParameters = 262144
     CouponServiceData = 16777216
-    # CheckInOut = 1048576
-    # SourceData = 2097152
+    CheckInOut = 1048576
+    SourceData = 2097152
+    AccountData = 67108864
+    RoomTypes = 134217728
+    # Payment provider missing?
 
 
 class OfferDetails(IntFlag):
@@ -212,10 +215,8 @@ class OfferDetails(IntFlag):
     PriceImages = 8192
     Themes = 16384
     RoomFeatures = 32768
-
-    # not in easychannel
-    # CancelPolicies = 262144
-    # PaymentTerms = 1048576
+    CancelPolicies = 262144
+    PaymentTerms = 1048576
 
 
 class PriceListDetails(Enum):
@@ -403,14 +404,16 @@ class SearchDistance:
 
 @dataclass
 class SearchOffer(BaseType):
-    arrival: str  # Date YYYY-MM-DD
-    departure: str  # Date YYYY-MM-DD
-    service: Board
-    room: list  # Room[]
+    arrival: str | None = field(default=None)  # Date YYYY-MM-DD
+    departure: str | None = field(default=None)  # Date YYYY-MM-DD
+    service: Board | None = field(default=None)
+    room: list | None = field(default=None)  # Room[]
     feature: RoomFeature | None = field(default=None)
     channel_id: list | None = field(default=None)  # string[]
     typ: SearchOfferType | None = field(default=None)
     rateplan: Rateplan | None = field(default=None)
+
+    # features from easychange missing?
 
     def __post_init__(self):
         super().__init__("search_offer")
@@ -587,88 +590,116 @@ class SearchPriceList:
 
 
 @dataclass
-class Guest:
+class Guest(BaseType):
+    firstname: str
+    lastname: str
+    email: str
     gender: str | None = field(default=None)
     prefix: str | None = field(default=None)
-    firstname: str | None = field(default=None)
-    lastname: str | None = field(default=None)
-    email: str | None = field(default=None)
     phone: str | None = field(default=None)
     address: Address | None = field(default=None)
     newsletter: Literal[0, 1] | None = field(default=None)  # 0 | 1
 
+    def __post_init__(self):
+        super().__init__("guest")
+
 
 @dataclass
-class Company:
+class Company(BaseType):
     name: str | None = field(default=None)
     taxnumber: str | None = field(default=None)
     recipient_code: str | None = field(default=None)
     address: Address | None = field(default=None)
 
+    def __post_init__(self):
+        super().__init__("company")
+
 
 @dataclass
-class Payment:
+class Payment(BaseType):
     method: PaymentMethod | None = field(default=None)
     invoice: Literal[0, 1] | None = field(default=None)  # 0 | 1
 
+    def __post_init__(self):
+        super().__init__("payment")
 
-class PaymentMethod(Enum):
-    CreditCardDeposit = (1,)
-    CreditCardAsSecurity = (2,)
-    CreditCardPayment = (8,)
-    BankTransferDeposit = (4,)
-    BankTransferPayment = (16,)
-    AccommodationPayment = (32,)
+
+class PaymentMethod(IntFlag):
+    CreditCardDeposit = 1
+    CreditCardAsSecurity = 2
+    CreditCardPayment = 8
+    BankTransferDeposit = 4
+    BankTransferPayment = 16
+    AccommodationPayment = 32
 
 
 @dataclass
-class Details:
+class Details(BaseType):
     extr_price: list | None = field(default=None)  # ExtraPrice[]
 
+    def __post_init__(self):
+        super().__init__("Details")
+
 
 @dataclass
-class ExtraPrice:
+class ExtraPrice(BaseType):
     price_id: int | None = field(default=None)  # number
     price_amount: int | None = field(default=None)  # number
 
+    def __post_init__(self):
+        super().__init__("extra_price")
+
 
 @dataclass
-class Form:
+class Form(BaseType):
     url_success: str | None = field(default=None)
     url_failure: str | None = field(default=None)
 
+    def __post_init__(self):
+        super().__init__("form")
+
 
 @dataclass
-class Tracking:
+class Tracking(BaseType):
     partner: str | None = field(default=None)
     media: str | None = field(default=None)
     campaign: str | None = field(default=None)
     companyinfo: str | None = field(default=None)
 
+    def __post_init__(self):
+        super().__init__("tracking")
+
 
 @dataclass
 class Stars(BaseType):
-    min: int | float | None = field(
+    min: Literal[1, 2, 3, 3.5, 4, 4.5, 5] | None = field(
         default=None
     )  # number, min can be 1, values are 1, 2, 3, 3.5, 4, 4.5, 5
-    max: int | float | None = field(default=None)  # number, max can be 5
+    max: Literal[1, 2, 3, 3.5, 4, 4.5, 5] | None = field(
+        default=None
+    )  # number, max can be 5
 
     def __post_init__(self):
         super().__init__("stars")
 
 
 @dataclass
-class Address:
+class Address(BaseType):
     street: str | None = field(default=None)
     zipcode: str | None = field(default=None)
     city: str | None = field(default=None)
     country: str | None = field(default=None)
 
+    def __post_init__(self):
+        super().__init__("address")
+
 
 @dataclass
 class Room(BaseType):
-    room_seq: int  # number
-    person: list  # number[], 1..n Persons and their age (store only age inside tags)
+    room_seq: int | None = field(default=None)  # number
+    person: list | None = field(
+        default=None
+    )  # number[], 1..n Persons and their age (store only age inside tags)
     offer_id: int | None = field(default=None)  # number
     room_id: int | None = field(default=None)  # number
     service: Board | None = field(default=None)
@@ -679,9 +710,10 @@ class Room(BaseType):
 
 
 class RoomType(Enum):
-    All = "0"
-    Room = "1"
-    Apartment = "2"
+    All = 0
+    Room = 1
+    Apartment = 2
+    Campsite = 4
 
 
 @dataclass

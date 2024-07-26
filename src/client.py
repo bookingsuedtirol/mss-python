@@ -63,7 +63,7 @@ class Client:
             root = change_structure(root, data)
 
         if _print == True:
-            print(ET.tostring(root.to_xml(), encoding="unicode"))
+            print(ET.tostring(root.request.to_xml(), encoding="unicode"))
 
         response = requests.post(
             url,
