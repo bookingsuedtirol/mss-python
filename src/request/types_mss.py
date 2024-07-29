@@ -187,8 +187,16 @@ class Options(BaseType):
     location_details: Literal[0, 1] | None = field(default=None)
     theme_details: Literal[0, 1] | None = field(default=None)
 
+    service_details: ServiceDetails | None = field(default=None)
+
     def __post_init__(self):
         super().__init__("options")
+
+
+class ServiceDetails(IntFlag):
+    Headlines = 8
+    Pictures = 32
+    Descriptions = 256
 
 
 class HotelDetails(IntFlag):

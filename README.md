@@ -24,8 +24,12 @@ This library requires an IANA Time Zone database to be present on the operating 
 - [x] getMasterpackagesList
 - [x] getLastMinuteQuotation
 - [x] getHotelPictures
+- [x] getOptionalServices
 
 <!-- - 
+
+
+- [x] get
 
 - [x] getUserSources 
 

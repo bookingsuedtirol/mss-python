@@ -207,11 +207,24 @@ def test_getQuot():
 
 
 def test_getHotelPictures():
-    return Request(Search(["de"], id=9000, pic_type=PictureType.Hotel, pic_group_id=0))
+    return Request(
+        Search(["de"], id=[9000], pic_type=PictureType.Hotel, pic_group_id=0)
+    )
 
 
 def test_getHotelPictureGroups():
-    return Request(Search(["de"], id=9000))
+    return Request(Search(["de"], id=[9000]))
+
+
+def test_getOptionalServices():
+    return Request(
+        Search(["de"], id=[9000], id_ofchannel="hgv"),
+        Options(
+            service_details=ServiceDetails.Headlines
+            + ServiceDetails.Descriptions
+            + ServiceDetails.Pictures
+        ),
+    )
 
 
 if __name__ == "__main__":
@@ -231,11 +244,11 @@ if __name__ == "__main__":
     #     "da4aaa48b52ce349f2e117b3137f985e"
     # )  # result id must have search.hotel defined, and the corresponding hotel must be bookable (hotel.bookable=1)
 
-    req = test_getHotelPictureGroups()
+    req = test_getOptionalServices()
 
     resp = client.request(
         getenv("MSS_SERVICE_URL"),
-        MethodName.GetHotelPictureGroups,
+        MethodName.GetOptionalServices,
         req,
         _print=True,  # , order_items, True
     )
