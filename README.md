@@ -9,6 +9,7 @@ This library requires an IANA Time Zone database to be present on the operating 
 ## Available methods
 
 - [x] getHotelList 
+- [x] getHotelListByFilter
 - [x] getSpecialList 
 - [x] getRoomList 
 - [x] getBooking
@@ -24,10 +25,16 @@ This library requires an IANA Time Zone database to be present on the operating 
 - [x] getMasterpackagesList
 - [x] getLastMinuteQuotation
 - [x] getHotelPictures
+- [x] getHotelPictureGroups
 - [x] getOptionalServices
 
 <!-- - 
 
+TODO
+- [x] getWidgetConfig
+- [x] getInquiry
+- [x] notifyMasterpackages
+- [x] validateCoupon
 
 - [x] get
 

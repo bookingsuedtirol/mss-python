@@ -9,6 +9,7 @@ from src.request.types_mss import *  # might need change
 
 class MethodName(Enum):
     GetHotelList = "getHotelList"
+    GetHotelListByFilter = "getHotelListByFilter"
     GetSpecialList = "getSpecialList"
     GetRoomList = "getRoomList"
     GetPriceList = "getPriceList"

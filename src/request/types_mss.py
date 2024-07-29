@@ -9,6 +9,7 @@ from abc import ABC  # , abstractmethod
 
 
 def get_child_xml(value, field, root):
+    field = field.replace("___", "-")
     match value:
         case None:
             return
@@ -148,8 +149,58 @@ class Search(BaseType):
 
     pic_type: PictureType | None = field(default=None)
 
+    select___avail: HotelFilters | None = field(default=None)
+    select___rooms: HotelFilters | None = field(default=None)
+    select___price: HotelFilters | None = field(default=None)
+
+    avail_alert: Literal[0, 1] | None = field(default=None)
+    rooms_alert: Literal[0, 1] | None = field(default=None)
+    price_alert: Literal[0, 1] | None = field(default=None)
+
     def __post_init__(self):
         super().__init__("search")
+
+
+class HotelFilters(Enum):
+    OTA = "ota"
+    EASI_CHANNEL = "easiChannel"
+    ROTER_HAHN = "10ec953a9d700b9598580a52d3dcef6c"
+    HOTEL_PARTNER = "2d9038f6a34c23280669f73ff531683c"
+    FIVE_STELLE = "30fb54af1d0d231b01b778647cfd967c"
+    ASA_LIGHT = "51c761e7b7b87dbeafe25a9b"
+    ASA_HOTEL = "51c761e7b7b87dc3afe15afa"
+    ROOM_CLOUD = "65ee9db4c37baedc1032cbd72c8caaaf"
+    GS_DATAPROVIDER = "66461e9d7c481e44e632051c3d040a2b"
+    HGV_TEST_CLIENT = "95f6a058-45ca-49df-874f-86f41e0bb29f"
+    HGV_CLIENT_FOR_TRENTINO = "a47a9dd543e55f8b3ee7ce4cc88b6d57"
+    HOTEL_NET_SOLUTIONS = "a57f0615b226609ae409c421ff118a8a"
+    BEDDY = "a8513684c7683fd457f82818f5f15bbf"
+    PCS_PHOENIX_XENUS = "AE1D2D8776B3FC1C;XENUS"
+    AIDA = "AIbD6vqHlYHA17DA"
+    AE_SMO = "ba098f2c86b942e58b6e7a89448f4063"
+    MTS_ONLINE = "bdcec66dfe4e8ef9f5c7e71e4835204c"
+    LTS_BOZEN = "be6bc64c94bbc062bcebfb40b4f93304"
+    BOOKING_EXPERT = "BookingE47acfb09170e8"
+    CASABLANCA = "CasaifeDZQQDaqvlblanca"
+    APARTMENT4HOLIDAY = "ceaeed03a0711eec46582b689d16dc0b"
+    CIAOBNB = "CiaoK2VAvAkFlCTcbnb"
+    EASI_SUITE = "Easy68e9nMxChannel"
+    EASI_SUITE_2 = "Easy68e9nMxChannel2"
+    SCIDOO = "f0bdfb926c2a8d066a9d2ea3e632471c"
+    ERICSOFT = "fcfb97bb1a8e608e5971928ac2032a68"
+    HOTEL_SPIDER = "HoteltihPrvo8kMpbSpider"
+    IPER_BOOKING = "iperbooking"
+    KROSS_BOOKING = "Kross2XklTsfhbBooking"
+    MM_ONE = "MMwRNWBeSQiABuONE"
+    PASSEPARTOUT = "passPGkPyHnw3IbApartout"
+    SEEKDA = "SEEK8XLyALKEzmpyp2DA"
+    SIMPLE_BOOKING = "Simple89sKiOdS9PUcbooking"
+    ANEXIS = "SiPaCbW2I921EpMedia"
+    SMART_PRICING = "SmartqpukLfH5Kl1price"
+    TEST_YANOVIS = "travelsuite"
+    VERTICAL_BOOKING = "VertiexDH0x8XV7Booking"
+    ALPINE_BITS_CERTIFICATION = "VwnIjABCertification78czDK6"
+    WUBOOK = "Wub0Na0CxWovxdVook"
 
 
 class PictureType(Enum):
