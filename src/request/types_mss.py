@@ -483,6 +483,10 @@ class SearchSpecial(BaseType):
     typ: SearchSpecialType | None = field(default=None)
     premium: SearchSpecialPremium | None = field(default=None)
 
+    poi_id: list | None = field(default=None)
+    poi_cat: list | None = field(default=None)
+    status: Literal[0, 1] | None = field(default=None)
+
     def __post_init__(self):
         super().__init__("search_special")
 

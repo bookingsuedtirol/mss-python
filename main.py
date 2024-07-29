@@ -183,6 +183,21 @@ def test_getthemeList():
     return Request(Search("de"), Options(theme_details=0))
 
 
+def test_getmaster():
+    search = Search(
+        ["de", "en", "it"],
+        search_special=SearchSpecial(
+            2179651, "2024-07-30", "2024-08-30", 4445, poi_id=[], poi_cat=[], status=1
+        ),
+    )  # only lang is required
+    order = Order(
+        Direction.Ascending, Field.ValidityStart
+    )  # possible order fields: valid_start, valid_end, rand
+    opt = Options(0, special_details=SpecialDetails.BasicInfo)  # optional
+
+    return Request(search, opt, order)
+
+
 if __name__ == "__main__":
     # TODO function to add children to xml in client
     # Does order matter when sending XML? Reordering children gives different result ID.
@@ -200,11 +215,11 @@ if __name__ == "__main__":
     #     "da4aaa48b52ce349f2e117b3137f985e"
     # )  # result id must have search.hotel defined, and the corresponding hotel must be bookable (hotel.bookable=1)
 
-    req = test_getthemeList()
+    req = test_getmaster()
 
     resp = client.request(
         getenv("MSS_SERVICE_URL"),
-        MethodName.GetThemeList,
+        MethodName.GetMasterpackagesList,
         req,
         _print=True,  # , order_items, True
     )

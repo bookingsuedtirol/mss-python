@@ -21,12 +21,13 @@ This library requires an IANA Time Zone database to be present on the operating 
 - [x] createInquiry
 - [x] getLocationList 
 - [x] getThemeList
+- [x] getMasterpackagesList
 
 <!-- - 
 
 - [x] getUserSources 
 
-- [x] getMasterpackagesList
+
 
 - [x] validateCoupon  -->
 
