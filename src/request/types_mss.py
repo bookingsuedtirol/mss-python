@@ -146,8 +146,19 @@ class Search(BaseType):
 
     root_id: list | None = field(default=None)  # list of ints
 
+    pic_type: PictureType | None = field(default=None)
+
     def __post_init__(self):
         super().__init__("search")
+
+
+class PictureType(Enum):
+    Hotel = "hotel"
+    Gallery = "gallery"
+    Profile = "profile"
+    Roomgroup = "roomgroup"
+    Pricelist = "pricelist"
+    Special = "special"
 
 
 @dataclass
