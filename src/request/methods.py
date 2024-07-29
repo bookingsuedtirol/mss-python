@@ -25,6 +25,7 @@ class MethodName(Enum):
     GetThemeList = "getThemeList"
     GetLastminuteQuotations = "getLastminuteQuotations"
     GetHotelPictures = "getHotelPictures"
+    GetHotelPictureGroups = "getHotelPictureGroups"
     ValidateCoupon = "validateCoupon"
 
 
