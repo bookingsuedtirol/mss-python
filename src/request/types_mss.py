@@ -174,6 +174,7 @@ class Options(BaseType):
     get_masterpackages: Literal[0, 1] | None = field(default=None)
 
     location_details: Literal[0, 1] | None = field(default=None)
+    theme_details: Literal[0, 1] | None = field(default=None)
 
     def __post_init__(self):
         super().__init__("options")

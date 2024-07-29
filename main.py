@@ -178,6 +178,11 @@ def test_getlocationlist():
     return Request(Search("de", root_id=[1]), Options(location_details=0))
 
 
+def test_getthemeList():
+    # For this method, the Request xml child is optional (it can even be empty)
+    return Request(Search("de"), Options(theme_details=0))
+
+
 if __name__ == "__main__":
     # TODO function to add children to xml in client
     # Does order matter when sending XML? Reordering children gives different result ID.
@@ -195,11 +200,11 @@ if __name__ == "__main__":
     #     "da4aaa48b52ce349f2e117b3137f985e"
     # )  # result id must have search.hotel defined, and the corresponding hotel must be bookable (hotel.bookable=1)
 
-    req = test_getlocationlist()
+    req = test_getthemeList()
 
     resp = client.request(
         getenv("MSS_SERVICE_URL"),
-        MethodName.GetLocationList,
+        MethodName.GetThemeList,
         req,
         _print=True,  # , order_items, True
     )
