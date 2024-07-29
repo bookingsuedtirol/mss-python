@@ -14,8 +14,9 @@ This library requires an IANA Time Zone database to be present on the operating 
 - [x] getBooking
 - [x] cancelBooking 
 - [x] prepareBooking 
+- [x] getAvailability 
+- [x] getRoomAvailability 
 <!-- - [] getPriceList 
-- [] getRoomAvailability 
 - [] prepareBooking  -->
 <!-- - 
 - [] createInquiry 

@@ -164,9 +164,10 @@ class Options(BaseType):
     special_details: SpecialDetails | None = field(default=None)
     # pricelist_details: PriceListDetails | None = field(default=None)
 
-    # get_availability: Literal[0, 1] | None = field(default=None)  # 0 | 1
-    # get_restrictions: Literal[0, 1] | None = field(default=None)  # 0 | 1
-    # get_roomdetails: int | None = field(default=None)  # 0 | 1
+    get_availability: Literal[0, 1] | None = field(default=None)  # 0 | 1
+    get_restrictions: Literal[0, 1] | None = field(default=None)  # 0 | 1
+    get_roomdetails: int | None = field(default=None)  # 0 | 1
+    get_masterpackages: int[0, 1] | None = field(default=None)
 
     def __post_init__(self):
         super().__init__("options")
@@ -573,11 +574,14 @@ class SpecialTheme(Enum):
 
 
 @dataclass
-class SearchAvailability:
+class SearchAvailability(BaseType):
     date_from: str | None = field(default=None)  # Date YYYY-MM-DD
     date_to: str | None = field(default=None)  # Date YYYY-MM-DD
     offer_id: list | None = field(default=None)  # number[]
     room_id: list | None = field(default=None)  # number[]
+
+    def __post_init__(self):
+        super().__init__("search_availability")
 
 
 @dataclass

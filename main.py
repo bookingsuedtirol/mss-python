@@ -124,9 +124,27 @@ def test2(result_id):
     return Request(search, data=data)
 
 
+def test3():
+    search = Search(
+        "de",
+        id=[9000],
+        search_availability=SearchAvailability("2024-07-29", "2024-08-05"),
+    )
+
+    options = Options(
+        get_availability=1,
+        get_restrictions="v2",
+        get_roomdetails=1,
+        get_masterpackages=1,
+    )
+
+    return Request(search, options)
+
+
 if __name__ == "__main__":
     # TODO function to add children to xml in client
     # Does order matter when sending XML? Reordering children gives different result ID.
+    # what values must offer_id and room_id in prepareBooking have??
 
     credentials = Credentials(
         getenv("MSS_SERVICE_USERNAME"),
@@ -136,16 +154,15 @@ if __name__ == "__main__":
     lang = "de"
     client = Client(credentials, lang)
 
-    req = test2(
-        "da4aaa48b52ce349f2e117b3137f985e"
-    )  # result id must have search.hotel defined, and the corresponding hotel must be bookable
+    # req = test2(
+    #     "da4aaa48b52ce349f2e117b3137f985e"
+    # )  # result id must have search.hotel defined, and the corresponding hotel must be bookable (hotel.bookable=1)
+
+    req = test3()
 
     resp = client.request(
         getenv("MSS_SERVICE_URL"),
-        MethodName.PrepareBooking,
+        MethodName.GetRoomAvailability,
         req,
         _print=True,  # , order_items, True
     )
-
-    # There is no documentation about this method, so I just checked that the XML request is done correctly
-    # I tried playing in insomnia with different values, but I couldn't manage to find correct transaction_id or guest_email values

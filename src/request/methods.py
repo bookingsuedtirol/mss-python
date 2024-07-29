@@ -12,6 +12,7 @@ class MethodName(Enum):
     GetSpecialList = "getSpecialList"
     GetRoomList = "getRoomList"
     GetPriceList = "getPriceList"
+    GetAvailability = "getAvailability"
     GetRoomAvailability = "getRoomAvailability"
     PrepareBooking = "prepareBooking"
     GetBooking = "getBooking"
