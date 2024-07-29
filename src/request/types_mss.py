@@ -585,12 +585,15 @@ class SearchAvailability(BaseType):
 
 
 @dataclass
-class SearchPriceList:
+class SearchPriceList(BaseType):
     date_from: str | None = field(default=None)  # Date YYYY-MM-DD
     date_to: str | None = field(default=None)  # Date YYYY-MM-DD
     service: Board | None = field(default=None)
     room_id: list | None = field(default=None)  # number[]
     typ: SearchSpecialType | None = field(default=None)
+
+    def __post_init__(self):
+        super().__init__("search_pricelist")
 
 
 @dataclass

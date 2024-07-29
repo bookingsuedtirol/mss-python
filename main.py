@@ -141,6 +141,15 @@ def test3():
     return Request(search, options)
 
 
+def test4():
+    search = Search(
+        "de",
+        id=[9000],
+        search_pricelist=SearchPriceList("2024-01-01", "2024-12-31", 0, typ=0),
+    )
+    return Request(search)
+
+
 if __name__ == "__main__":
     # TODO function to add children to xml in client
     # Does order matter when sending XML? Reordering children gives different result ID.
@@ -158,11 +167,11 @@ if __name__ == "__main__":
     #     "da4aaa48b52ce349f2e117b3137f985e"
     # )  # result id must have search.hotel defined, and the corresponding hotel must be bookable (hotel.bookable=1)
 
-    req = test3()
+    req = test4()
 
     resp = client.request(
         getenv("MSS_SERVICE_URL"),
-        MethodName.GetRoomAvailability,
+        MethodName.GetPriceList,
         req,
         _print=True,  # , order_items, True
     )
