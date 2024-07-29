@@ -142,6 +142,8 @@ class Search(BaseType):
 
     pic_group_id: int | None = field(default=None)
 
+    id_apt: int | None = field(default=None)
+
     def __post_init__(self):
         super().__init__("search")
 
