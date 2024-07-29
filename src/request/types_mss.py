@@ -144,6 +144,8 @@ class Search(BaseType):
 
     id_apt: int | None = field(default=None)
 
+    root_id: list | None = field(default=None)  # list of ints
+
     def __post_init__(self):
         super().__init__("search")
 
@@ -169,7 +171,9 @@ class Options(BaseType):
     get_availability: Literal[0, 1] | None = field(default=None)  # 0 | 1
     get_restrictions: Literal[0, 1] | None = field(default=None)  # 0 | 1
     get_roomdetails: int | None = field(default=None)  # 0 | 1
-    get_masterpackages: int[0, 1] | None = field(default=None)
+    get_masterpackages: Literal[0, 1] | None = field(default=None)
+
+    location_details: Literal[0, 1] | None = field(default=None)
 
     def __post_init__(self):
         super().__init__("options")

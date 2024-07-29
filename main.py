@@ -124,7 +124,7 @@ def test2(result_id):
     return Request(search, data=data)
 
 
-def test3():
+def test_getAvailability():
     search = Search(
         "de",
         id=[9000],
@@ -143,7 +143,7 @@ def test3():
     return Request(search)  # , options)
 
 
-def test4():
+def test_getPriceList():
     search = Search(
         "de",
         id=[9000],
@@ -152,7 +152,7 @@ def test4():
     return Request(search)
 
 
-def test5():
+def test_createInquiry():
     search = Search(
         "de",
         id_ofchannel="hgv",
@@ -173,6 +173,11 @@ def test5():
     )
 
 
+def test_getlocationlist():
+    # For this method, the Request xml child is optional (it can even be empty)
+    return Request(Search("de", root_id=[1]), Options(location_details=0))
+
+
 if __name__ == "__main__":
     # TODO function to add children to xml in client
     # Does order matter when sending XML? Reordering children gives different result ID.
@@ -190,11 +195,11 @@ if __name__ == "__main__":
     #     "da4aaa48b52ce349f2e117b3137f985e"
     # )  # result id must have search.hotel defined, and the corresponding hotel must be bookable (hotel.bookable=1)
 
-    req = test5()
+    req = test_getlocationlist()
 
     resp = client.request(
         getenv("MSS_SERVICE_URL"),
-        MethodName.CreateInquiry,
+        MethodName.GetLocationList,
         req,
         _print=True,  # , order_items, True
     )
