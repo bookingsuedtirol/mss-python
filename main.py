@@ -266,6 +266,10 @@ def test_validateCoupon(coupon):
     )
 
 
+def test_getInquiry(booking_id):
+    return Request(Search(["de"], booking_id=booking_id, guest_email="asf@asf.com"))
+
+
 if __name__ == "__main__":
     # TODO function to add children to xml in client
     # Does order matter when sending XML? Reordering children gives different result ID.
@@ -283,11 +287,11 @@ if __name__ == "__main__":
     #     "da4aaa48b52ce349f2e117b3137f985e"
     # )  # result id must have search.hotel defined, and the corresponding hotel must be bookable (hotel.bookable=1)
 
-    req = test_validateCoupon("XXX")
+    req = test_getInquiry(123)
 
     resp = client.request(
         getenv("MSS_SERVICE_URL"),
-        MethodName.ValidateCoupon,
+        MethodName.GetInquiry,
         req,
         _print=True,  # , order_items, True
     )

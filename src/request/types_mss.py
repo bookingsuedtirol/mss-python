@@ -3,9 +3,7 @@ from dataclasses import dataclass, field
 from enum import Enum, IntFlag
 from typing import Literal
 import xml.etree.ElementTree as ET
-from abc import ABC  # , abstractmethod
-
-# from methods import Method
+from abc import ABC
 
 
 def get_child_xml(value, field, root):

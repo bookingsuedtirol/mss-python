@@ -21,6 +21,7 @@ class MethodName(Enum):
     GetBooking = "getBooking"
     CancelBooking = "cancelBooking"
     CreateInquiry = "createInquiry"
+    GetInquiry = "getInquiry"
     GetUserSources = "getUserSources"
     GetLocationList = "getLocationList"
     GetMasterpackagesList = "getMasterpackagesList"
