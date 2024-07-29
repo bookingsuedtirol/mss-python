@@ -252,6 +252,20 @@ def test_notifyMaster():
     )
 
 
+def test_validateCoupon(coupon):
+    return Request(
+        Search(
+            ["de"],
+            id=9000,
+            coupon_code=coupon,
+            total_price=100,
+            arrival="2022-05-01",
+            departure="2022-05-08",
+            coupon_type="promotion",
+        )
+    )
+
+
 if __name__ == "__main__":
     # TODO function to add children to xml in client
     # Does order matter when sending XML? Reordering children gives different result ID.
@@ -269,11 +283,11 @@ if __name__ == "__main__":
     #     "da4aaa48b52ce349f2e117b3137f985e"
     # )  # result id must have search.hotel defined, and the corresponding hotel must be bookable (hotel.bookable=1)
 
-    req = test_notifyMaster()
+    req = test_validateCoupon("XXX")
 
     resp = client.request(
         getenv("MSS_SERVICE_URL"),
-        MethodName.NotifyMasterpackages,
+        MethodName.ValidateCoupon,
         req,
         _print=True,  # , order_items, True
     )

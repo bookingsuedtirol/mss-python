@@ -152,10 +152,15 @@ class Search(BaseType):
     select___avail: HotelFilters | None = field(default=None)
     select___rooms: HotelFilters | None = field(default=None)
     select___price: HotelFilters | None = field(default=None)
-
     avail_alert: Literal[0, 1] | None = field(default=None)
     rooms_alert: Literal[0, 1] | None = field(default=None)
     price_alert: Literal[0, 1] | None = field(default=None)
+
+    coupon_code: str | None = field(default=None)
+    total_price: int | None = field(default=None)
+    arrival: str | None = field(default=None)
+    departure: str | None = field(default=None)
+    coupon_type: Literal["promotion", "voucher"] | None = field(default=None)
 
     def __post_init__(self):
         super().__init__("search")

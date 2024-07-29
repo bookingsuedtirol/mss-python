@@ -24,7 +24,9 @@ This library requires an IANA Time Zone database to be present on the operating 
 - [x] getLocationList 
 - [x] getThemeList
 - [x] getMasterpackagesList
+- [x] notifyMasterpackages
 - [x] getLastMinuteQuotation
+- [x] validateCoupon
 - [x] getHotelPictures
 - [x] getHotelPictureGroups
 - [x] getOptionalServices
@@ -34,8 +36,6 @@ This library requires an IANA Time Zone database to be present on the operating 
 TODO
 
 - [x] getInquiry - how to find booking IDs?
-- [x] notifyMasterpackages
-- [x] validateCoupon
 
 
 - [x] getUserSources 
