@@ -579,6 +579,8 @@ class SearchAvailability(BaseType):
     date_to: str | None = field(default=None)  # Date YYYY-MM-DD
     offer_id: list | None = field(default=None)  # number[]
     room_id: list | None = field(default=None)  # number[]
+    duration: int | None = field(default=None)
+    room: Room | None = field(default=None)
 
     def __post_init__(self):
         super().__init__("search_availability")

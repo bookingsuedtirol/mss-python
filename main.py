@@ -128,17 +128,19 @@ def test3():
     search = Search(
         "de",
         id=[9000],
-        search_availability=SearchAvailability("2024-07-29", "2024-08-05"),
+        search_availability=SearchAvailability(
+            "2024-07-01", "2024-07-31", duration=1, room=Room(person=[18, 18])
+        ),
     )
 
-    options = Options(
-        get_availability=1,
-        get_restrictions="v2",
-        get_roomdetails=1,
-        get_masterpackages=1,
-    )
+    # options = Options(
+    #     get_availability=1,
+    #     get_restrictions="v2",
+    #     get_roomdetails=1,
+    #     get_masterpackages=1,
+    # )
 
-    return Request(search, options)
+    return Request(search)  # , options)
 
 
 def test4():
@@ -167,11 +169,11 @@ if __name__ == "__main__":
     #     "da4aaa48b52ce349f2e117b3137f985e"
     # )  # result id must have search.hotel defined, and the corresponding hotel must be bookable (hotel.bookable=1)
 
-    req = test4()
+    req = test3()
 
     resp = client.request(
         getenv("MSS_SERVICE_URL"),
-        MethodName.GetPriceList,
+        MethodName.GetDayAvailability,
         req,
         _print=True,  # , order_items, True
     )
