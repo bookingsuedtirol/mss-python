@@ -359,8 +359,21 @@ class Data(BaseType):
     storno_reason: StornoReason | None = field(default=None)
     storno_reason_text: str | None = field(default=None)
 
+    special: list | None = field(default=None)  # list of specials
+
     def __post_init__(self):
         super().__init__("data")
+
+
+@dataclass
+class Special(BaseType):
+    offer_id: int
+    action: Literal["update", "delete"]
+    time_modified: str  # ISO 8601 Date
+    reset_participants: Literal[0, 1] | None = field(default=None)
+
+    def __post_init__(self):
+        super().__init__("special")
 
 
 class StornoReason(Enum):

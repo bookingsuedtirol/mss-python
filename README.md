@@ -33,7 +33,7 @@ This library requires an IANA Time Zone database to be present on the operating 
 
 TODO
 
-- [x] getInquiry
+- [x] getInquiry - how to find booking IDs?
 - [x] notifyMasterpackages
 - [x] validateCoupon
 

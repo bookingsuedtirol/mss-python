@@ -24,6 +24,7 @@ class MethodName(Enum):
     GetUserSources = "getUserSources"
     GetLocationList = "getLocationList"
     GetMasterpackagesList = "getMasterpackagesList"
+    NotifyMasterpackages = "notifyMasterpackages"
     GetThemeList = "getThemeList"
     GetLastminuteQuotations = "getLastminuteQuotations"
     GetHotelPictures = "getHotelPictures"
