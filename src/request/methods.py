@@ -12,6 +12,7 @@ class MethodName(Enum):
     GetHotelListByFilter = "getHotelListByFilter"
     GetSpecialList = "getSpecialList"
     GetRoomList = "getRoomList"
+    GetWidgetConfig = "getWidgetConfig"
     GetPriceList = "getPriceList"
     GetAvailability = "getAvailability"
     GetRoomAvailability = "getRoomAvailability"

@@ -11,7 +11,8 @@ This library requires an IANA Time Zone database to be present on the operating 
 - [x] getHotelList 
 - [x] getHotelListByFilter
 - [x] getSpecialList 
-- [x] getRoomList 
+- [x] getRoomList
+- [x] getWidgetConfig 
 - [x] getBooking
 - [x] cancelBooking 
 - [x] prepareBooking 
@@ -31,18 +32,15 @@ This library requires an IANA Time Zone database to be present on the operating 
 <!-- - 
 
 TODO
-- [x] getWidgetConfig
+
 - [x] getInquiry
 - [x] notifyMasterpackages
 - [x] validateCoupon
 
-- [x] get
 
 - [x] getUserSources 
 
-
-
-- [x] validateCoupon  -->
+  -->
 
 <!-- Warning: Only the methods with a ✓ next to them have been tested so far.
 
