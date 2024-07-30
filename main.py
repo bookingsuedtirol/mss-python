@@ -84,21 +84,8 @@ def get_order_items():
 def test1():
     # test getHotelList
     return Request(
-        Search(
-            "de",
-            SearchOffer(
-                "b",
-                "c",
-                Board.HalfBoard,
-                [
-                    Room(1, [18, 18], room_type=RoomType.All),
-                    Room(2, [1], room_type=RoomType.All),
-                    Room(3, [1], room_type=RoomType.All),
-                ],
-                typ=10,
-            ),
-        ),
-        Options(picture_date="2000-01-01"),
+        Search("de", id=6009),
+        Options(HotelDetails.BasicInfo, picture_date="2000-01-01"),
     )
 
 
@@ -287,11 +274,14 @@ if __name__ == "__main__":
     #     "da4aaa48b52ce349f2e117b3137f985e"
     # )  # result id must have search.hotel defined, and the corresponding hotel must be bookable (hotel.bookable=1)
 
-    req = test_getInquiry(123)
+    req = test1()
 
     resp = client.request(
         getenv("MSS_SERVICE_URL"),
-        MethodName.GetInquiry,
+        MethodName.GetHotelList,
         req,
         _print=True,  # , order_items, True
     )
+
+    hotels = resp["result"]["hotel"]
+    print(hotels)

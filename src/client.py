@@ -1,6 +1,8 @@
 import requests
-from os import getenv
-import xml.etree.ElementTree as ET
+
+# from os import getenv
+# import xml.etree.ElementTree as ET
+import xmltodict
 from src.request.methods import *
 from src.request.types_mss import *
 
@@ -71,11 +73,20 @@ class Client:
             headers={"Content-Type": "application/xml"},
         )
 
-        root = ET.fromstring(response.content)
-        error = root.find("header").find("error")
-        if int(error.find("code").text) > 0:
+        # root = ET.fromstring(response.content)
+        # error = root.find("header").find("error")
+        # if int(error.find("code").text) > 0:
+        #     raise Exception(
+        #         f'MSS returned an error: code {error.find("code").text}, message: "{error.find("message").text}"'
+        #     )
+
+        # return root
+
+        responseRoot = xmltodict.parse(response.content)
+        error = responseRoot["root"]["header"]["error"]
+        if int(error["code"]) > 0:
             raise Exception(
-                f'MSS returned an error: code {error.find("code").text}, message: "{error.find("message").text}"'
+                f'MSS returned an error: code {error["code"]}, message: "{error["message"]}"'
             )
 
-        return root
+        return responseRoot["root"]
