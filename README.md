@@ -32,7 +32,7 @@ This library requires an IANA Time Zone database to be present on the operating 
 - [x] getOptionalServices
 
 
-## Execution
+## Example Execution
 
 `python3 -m examples.simple.main`
 

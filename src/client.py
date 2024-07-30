@@ -1,7 +1,7 @@
 import requests
 import xmltodict
-from src.request.methods import *
-from src.request.types_mss import *
+from request.methods import *
+from request.types_mss import *
 
 
 # maybe recursion should be used instead of doing if checks

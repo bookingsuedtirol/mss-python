@@ -1,6 +1,6 @@
 from __future__ import annotations
 import xml.etree.ElementTree as ET
-from src.request.types_mss import *  # might need change
+from request.types_mss import *  # might need change
 
 
 class MethodName(Enum):

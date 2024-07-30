@@ -1,11 +1,11 @@
-# import sys
+import sys
 
 # # Add the parent directory to the Python path
-# sys.path.append("../../src/")
+sys.path.append("../../src/")
 
-from src.client import Client
-from src.request.types_mss import *
-from src.request.methods import MethodName
+from client import Client
+from request.types_mss import *
+from request.methods import MethodName
 
 
 if __name__ == "__main__":
