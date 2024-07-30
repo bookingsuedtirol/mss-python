@@ -31,6 +31,11 @@ This library requires an IANA Time Zone database to be present on the operating 
 - [x] getHotelPictureGroups
 - [x] getOptionalServices
 
+
+## Execution
+
+`python3 -m examples.simple.main`
+
 <!-- - 
 
 TODO

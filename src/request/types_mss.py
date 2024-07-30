@@ -300,12 +300,6 @@ class OfferDetails(IntFlag):
     PaymentTerms = 1048576
 
 
-class PriceListDetails(Enum):
-    BaseData = (1,)
-    Headlines = (8,)
-    Seasons = (4194304,)
-
-
 class RoomDetails(IntFlag):
     BasicInfo = 4
     Title = 8

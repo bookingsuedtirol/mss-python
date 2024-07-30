@@ -1,7 +1,4 @@
 import requests
-
-# from os import getenv
-# import xml.etree.ElementTree as ET
 import xmltodict
 from src.request.methods import *
 from src.request.types_mss import *
@@ -72,15 +69,6 @@ class Client:
             data=ET.tostring(root.to_xml(), encoding="unicode"),
             headers={"Content-Type": "application/xml"},
         )
-
-        # root = ET.fromstring(response.content)
-        # error = root.find("header").find("error")
-        # if int(error.find("code").text) > 0:
-        #     raise Exception(
-        #         f'MSS returned an error: code {error.find("code").text}, message: "{error.find("message").text}"'
-        #     )
-
-        # return root
 
         responseRoot = xmltodict.parse(response.content)
         error = responseRoot["root"]["header"]["error"]
