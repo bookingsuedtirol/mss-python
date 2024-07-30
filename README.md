@@ -34,7 +34,13 @@ This library requires an IANA Time Zone database to be present on the operating 
 
 ## Example Execution
 
-`python3 -m examples.simple.main`
+`cd ./examples/simple`
+
+`python3 main.py`
+
+or
+
+`python3 -m main`
 
 <!-- - 
 
