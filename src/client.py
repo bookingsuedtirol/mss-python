@@ -32,7 +32,7 @@ def change_structure(root: Root, child: BaseType):
 
 class Client:
     def __init__(
-        self, cred: Credentials, lang: str, elements: list | None = None
+        self, cred: Credentials, lang: list, elements: list | None = None
     ) -> None:
         # self.xml = get_base_xml(lang)
         # self.xml = xml_add(self.xml, elements)
@@ -42,10 +42,10 @@ class Client:
     def request(
         self,
         url: str,
-        method_name: str,
-        data: ET.Element | None = None,
-        _print: True | False = False,
-    ) -> ET.Element:
+        method_name: MethodName,
+        data: BaseType | None = None,
+        _print: Literal[True, False] = False,
+    ) -> dict:
         """
         Makes a post request to the given URL with the specified data and method name.
 

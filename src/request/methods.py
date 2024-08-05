@@ -34,7 +34,7 @@ class Method:
     def __init__(self, name: MethodName):
         self.name = name
 
-    def get_base_xml(self, cred: Credentials, lang: Search) -> ET.Element:
+    def get_base_xml(self, cred: Credentials, lang: Search) -> Root:
         """
         Returns an XML (ElementTree) with the mandatory elements needed for the request.
 

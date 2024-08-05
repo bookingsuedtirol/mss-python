@@ -1,3 +1,6 @@
 XML-samples
 .env
 __pycache__
+./src/mss_python.egg-ingo
+./pyproject.toml
+./setup.cfg

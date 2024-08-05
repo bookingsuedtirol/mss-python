@@ -53,19 +53,7 @@ class Root(BaseType):
 @dataclass()
 class Header(BaseType):
     credentials: Credentials
-    method: str = Literal[
-        "getHotelList",
-        "getSpecialList",
-        "getRoomList",
-        "getPriceList",
-        "getRoomAvailability",
-        "getHotelPictures",
-        "getHotelPictureGroups",
-        "prepareBooking",
-        "getBooking",
-        "createInquiry",
-        "getUserSources",
-    ]
+    method: MethodName
     # method: str
     paging: Paging | None = field(default=None)
 
@@ -106,7 +94,7 @@ class Request(BaseType):
 
 @dataclass
 class Search(BaseType):
-    lang: Literal["de", "it", "en", "es", "fr", "ru", "da"]
+    lang: list  # Literal["de", "it", "en", "es", "fr", "ru", "da"]
     result_id: str | None = field(default=None)
 
     agent: str | None = field(default=None)
@@ -666,8 +654,8 @@ class SpecialTheme(Enum):
 
 @dataclass
 class SearchAvailability(BaseType):
-    date_from: str | None = field(default=None)  # Date YYYY-MM-DD
-    date_to: str | None = field(default=None)  # Date YYYY-MM-DD
+    date_from: str  # Date YYYY-MM-DD
+    date_to: str  # Date YYYY-MM-DD
     offer_id: list | None = field(default=None)  # number[]
     room_id: list | None = field(default=None)  # number[]
     duration: int | None = field(default=None)
