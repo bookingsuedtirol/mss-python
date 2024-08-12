@@ -77,4 +77,52 @@ class Client:
                 f'MSS returned an error: code {error["code"]}, message: "{error["message"]}"'
             )
 
-        return responseRoot["root"]
+        # import pdb
+
+        # pdb.set_trace()
+
+        return refine_response(responseRoot["root"], method_name)
+
+
+def refine_response(resp: dict, meth: MethodName) -> dict:
+    if meth == MethodName.GetHotelList:
+        return refine_getHotelList(resp)
+
+    return resp
+
+
+def refine_getHotelList(resp: dict) -> dict:
+    if resp["result"] == None:
+        return resp
+    elif "hotel" not in resp["result"] or resp["result"]["hotel"] == None:
+        return resp
+    elif type(resp["result"]["hotel"]) != list:
+        resp["result"]["hotel"] = [resp["result"]["hotel"]]
+
+    for x in resp["result"]["hotel"]:
+        if "pictures" not in x:
+            x["pictures"] = {"picture": []}
+        elif type(x["pictures"]["picture"]) != list:
+            x["pictures"]["picture"] = [x["pictures"]["picture"]]
+
+        if "gallery" not in x:
+            x["gallery"] = {"picture": []}
+        elif type(x["gallery"]["picture"]) != list:
+            x["gallery"]["picture"] = [x["gallery"]["picture"]]
+
+        if "features_view" not in x:
+            x["features_view"] = {"feature": []}
+        elif type(x["features_view"]["feature"]) != list:
+            x["features_view"]["feature"] = [x["features_view"]["feature"]]
+
+        if "pos" not in x:
+            x["pos"] = {"id_pos": []}
+        elif type(x["pos"]["id_pos"]) != list:
+            x["pos"]["id_pos"] = [x["pos"]["id_pos"]]
+
+            # if "channel" not in x:
+            #     x["channel"] = {"picture": []}
+            # elif type(x["channel"]["picture"]) != list:
+            #     x["channel"]["picture"] = [x["channel"]["picture"]]
+
+    return resp

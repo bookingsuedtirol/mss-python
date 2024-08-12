@@ -4,6 +4,7 @@ from enum import Enum, IntFlag
 from typing import Literal
 import xml.etree.ElementTree as ET
 from abc import ABC
+from methods import MethodName
 
 
 def get_child_xml(value, field, root):
