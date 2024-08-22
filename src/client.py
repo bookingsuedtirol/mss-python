@@ -4,7 +4,7 @@ from request.methods import *
 from request.types_mss import *
 
 
-# maybe recursion should be used instead of doing if checks
+# maybe recursion should be used instead of doing if checks?
 def change_structure(root: Root, child: BaseType):
     if child.tag == "root":
         return child
@@ -34,8 +34,6 @@ class Client:
     def __init__(
         self, cred: Credentials, lang: list, elements: list | None = None
     ) -> None:
-        # self.xml = get_base_xml(lang)
-        # self.xml = xml_add(self.xml, elements)
         self.cred = cred
         self.lang = Search(lang)
 
