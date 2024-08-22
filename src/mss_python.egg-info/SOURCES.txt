@@ -1,0 +1,10 @@
+LICENSE
+README.md
+setup.py
+src/mss_python.egg-info/PKG-INFO
+src/mss_python.egg-info/SOURCES.txt
+src/mss_python.egg-info/dependency_links.txt
+src/mss_python.egg-info/top_level.txt
+src/request/__init__.py
+src/request/methods.py
+src/request/types_mss.py
