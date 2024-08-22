@@ -1,7 +1,7 @@
 import sys
 
 # # Add the parent directory to the Python path
-sys.path.append("../../src/")
+sys.path.append("../../src/mss_python/")
 
 from client import Client
 from request.types_mss import *

@@ -1,7 +1,9 @@
 import requests
 import xmltodict
-from request.methods import *
-from request.types_mss import *
+import xml.etree.ElementTree as ET
+
+from .request.methods import Method
+from .request.types_mss import Root, BaseType, Credentials, Search, MethodName, Literal
 
 
 # maybe recursion should be used instead of doing if checks?
@@ -56,10 +58,10 @@ class Client:
 
         root = method.get_base_xml(self.cred, self.lang)
 
-        if data != None:
+        if data is None:
             root = change_structure(root, data)
 
-        if _print == True:
+        if _print is True:
             print(ET.tostring(root.request.to_xml(), encoding="unicode"))
 
         response = requests.post(
@@ -86,11 +88,11 @@ def refine_response(resp: dict, meth: MethodName) -> dict:
 
 
 def refine_getHotelList(resp: dict) -> dict:
-    if resp["result"] == None:
+    if resp["result"] is None:
         return resp
-    elif "hotel" not in resp["result"] or resp["result"]["hotel"] == None:
+    elif "hotel" not in resp["result"] or resp["result"]["hotel"] is None:
         return resp
-    elif type(resp["result"]["hotel"]) != list:
+    elif resp["result"]["hotel"] is list:
         resp["result"]["hotel"] = [resp["result"]["hotel"]]
 
     for hotel in resp["result"]["hotel"]:
@@ -105,5 +107,5 @@ def refine_getHotelList(resp: dict) -> dict:
 def ensure_list_value(hotel: dict, parent_fld: str, child_fld: str) -> None:
     if parent_fld not in hotel:
         hotel[parent_fld] = {child_fld: []}
-    elif type(hotel[parent_fld][child_fld]) != list:
+    elif hotel[parent_fld][child_fld] is list:
         hotel[parent_fld][child_fld] = [hotel[parent_fld][child_fld]]

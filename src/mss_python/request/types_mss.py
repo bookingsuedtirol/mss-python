@@ -4,7 +4,8 @@ from enum import Enum, IntFlag
 from typing import Literal
 import xml.etree.ElementTree as ET
 from abc import ABC
-from methods import MethodName
+
+from .method_names import MethodName
 
 
 def get_child_xml(value, field, root):
@@ -35,8 +36,8 @@ class BaseType(ABC):
         root = ET.Element(self.tag)
         # root.append(self.search.to_xml())
 
-        for field, value in vars(self).items():
-            get_child_xml(value, field, root)
+        for field_, value in vars(self).items():
+            get_child_xml(value, field_, root)
 
         return root
 
@@ -624,7 +625,7 @@ class SpecialTheme(Enum):
     ThemeIDBicycleTouring = 86
     ThemeIDEBike = 87
 
-    ##These values were theme_bit
+    ## These values were theme_bit
     # Hiking = 1
     # Cycling = 2
     # Family = 4
