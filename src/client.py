@@ -77,10 +77,6 @@ class Client:
                 f'MSS returned an error: code {error["code"]}, message: "{error["message"]}"'
             )
 
-        # import pdb
-
-        # pdb.set_trace()
-
         return refine_response(responseRoot["root"], method_name)
 
 
@@ -100,29 +96,16 @@ def refine_getHotelList(resp: dict) -> dict:
         resp["result"]["hotel"] = [resp["result"]["hotel"]]
 
     for x in resp["result"]["hotel"]:
-        if "pictures" not in x:
-            x["pictures"] = {"picture": []}
-        elif type(x["pictures"]["picture"]) != list:
-            x["pictures"]["picture"] = [x["pictures"]["picture"]]
-
-        if "gallery" not in x:
-            x["gallery"] = {"picture": []}
-        elif type(x["gallery"]["picture"]) != list:
-            x["gallery"]["picture"] = [x["gallery"]["picture"]]
-
-        if "features_view" not in x:
-            x["features_view"] = {"feature": []}
-        elif type(x["features_view"]["feature"]) != list:
-            x["features_view"]["feature"] = [x["features_view"]["feature"]]
-
-        if "pos" not in x:
-            x["pos"] = {"id_pos": []}
-        elif type(x["pos"]["id_pos"]) != list:
-            x["pos"]["id_pos"] = [x["pos"]["id_pos"]]
-
-            # if "channel" not in x:
-            #     x["channel"] = {"picture": []}
-            # elif type(x["channel"]["picture"]) != list:
-            #     x["channel"]["picture"] = [x["channel"]["picture"]]
+        ensure_list_value(x, "pictures", "picture")
+        ensure_list_value(x, "gallery", "picture")
+        ensure_list_value(x, "feature_view", "feature")
+        ensure_list_value(x, "pos", "id_pos")
 
     return resp
+
+
+def ensure_list_value(x: dict, parent_fld: str, child_fld: str) -> None:
+    if parent_fld not in x:
+        x[parent_fld] = {child_fld: []}
+    elif type(x[parent_fld][child_fld]) != list:
+        x[parent_fld][child_fld] = [x[parent_fld][child_fld]]
