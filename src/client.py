@@ -95,17 +95,17 @@ def refine_getHotelList(resp: dict) -> dict:
     elif type(resp["result"]["hotel"]) != list:
         resp["result"]["hotel"] = [resp["result"]["hotel"]]
 
-    for x in resp["result"]["hotel"]:
-        ensure_list_value(x, "pictures", "picture")
-        ensure_list_value(x, "gallery", "picture")
-        ensure_list_value(x, "feature_view", "feature")
-        ensure_list_value(x, "pos", "id_pos")
+    for hotel in resp["result"]["hotel"]:
+        ensure_list_value(hotel, "pictures", "picture")
+        ensure_list_value(hotel, "gallery", "picture")
+        ensure_list_value(hotel, "feature_view", "feature")
+        ensure_list_value(hotel, "pos", "id_pos")
 
     return resp
 
 
-def ensure_list_value(x: dict, parent_fld: str, child_fld: str) -> None:
-    if parent_fld not in x:
-        x[parent_fld] = {child_fld: []}
-    elif type(x[parent_fld][child_fld]) != list:
-        x[parent_fld][child_fld] = [x[parent_fld][child_fld]]
+def ensure_list_value(hotel: dict, parent_fld: str, child_fld: str) -> None:
+    if parent_fld not in hotel:
+        hotel[parent_fld] = {child_fld: []}
+    elif type(hotel[parent_fld][child_fld]) != list:
+        hotel[parent_fld][child_fld] = [hotel[parent_fld][child_fld]]
