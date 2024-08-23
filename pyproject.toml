@@ -19,5 +19,5 @@ where = ["src"]
 include = ["mss_python"]
 namespaces = false
 
-# [tool.setuptools_scm]
-# version_file = "src/mss_python/_version.py"
+[tool.setuptools_scm]
+version_file = "src/mss_python/_version.py"
