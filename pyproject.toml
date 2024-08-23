@@ -12,10 +12,13 @@ authors = [
   { name = "HGV", email = "development@hgv.it" },
   { name = "Rubin Canaj" },
 ]
-dynamic = ["version"]
+dynamic = ["version", "dependencies"]
 
 [project.urls]
 Repository = "https://github.com/bookingsuedtirol/mss-python"
+
+[tool.setuptools.dynamic]
+dependencies = { file = ["requirements.txt"] }
 
 [tool.setuptools.packages.find]
 where = ["src"]
