@@ -98,7 +98,7 @@ def refine_getHotelList(resp: dict) -> dict:
     for hotel in resp["result"]["hotel"]:
         ensure_list_value(hotel, "pictures", "picture")
         ensure_list_value(hotel, "gallery", "picture")
-        ensure_list_value(hotel, "feature_view", "feature")
+        ensure_list_value(hotel, "features_view", "feature")
         ensure_list_value(hotel, "pos", "id_pos")
 
     return resp
