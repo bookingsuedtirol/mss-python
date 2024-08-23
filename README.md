@@ -8,20 +8,20 @@ This library requires an IANA Time Zone database to be present on the operating 
 
 ## Available methods
 
-- [x] getHotelList 
+- [x] getHotelList
 - [x] getHotelListByFilter
-- [x] getSpecialList 
+- [x] getSpecialList
 - [x] getRoomList
-- [x] getWidgetConfig 
+- [x] getWidgetConfig
 - [x] getBooking
-- [x] cancelBooking 
-- [x] prepareBooking 
-- [x] getAvailability 
+- [x] cancelBooking
+- [x] prepareBooking
+- [x] getAvailability
 - [x] getRoomAvailability
 - [x] getDayAvailability
-- [x] getPriceList 
+- [x] getPriceList
 - [x] createInquiry
-- [x] getLocationList 
+- [x] getLocationList
 - [x] getThemeList
 - [x] getMasterpackagesList
 - [x] notifyMasterpackages
@@ -31,25 +31,18 @@ This library requires an IANA Time Zone database to be present on the operating 
 - [x] getHotelPictureGroups
 - [x] getOptionalServices
 
-
 ## Example Execution
 
-`cd ./examples/simple`
+`python3 -m examples.simple.main`
 
-`python3 main.py`
-
-or
-
-`python3 -m main`
-
-<!-- - 
+<!-- -
 
 TODO
 
 - [x] getInquiry - how to find booking IDs?
 
 
-- [x] getUserSources 
+- [x] getUserSources
 
   -->
 
