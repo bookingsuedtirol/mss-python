@@ -2,7 +2,7 @@ XML-samples
 .env
 __pycache__
 src/mss_python.egg-info/
-pyproject.toml
 setup.cfg
 .DS_Store
 dist/
+_version.py
