@@ -7,7 +7,7 @@ name = "mss-python"
 description = "MSS API wrapper for Python projects"
 readme = "README.md"
 requires-python = ">=3.7, <4"
-license = { text = "MIT License" }
+license = { file = "LICENSE" }
 authors = [{ name = "HGV", email = "development@hgv.it" }]
 dynamic = ["version"]
 
