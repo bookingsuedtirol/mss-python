@@ -8,7 +8,10 @@ description = "MSS API wrapper for Python projects"
 readme = "README.md"
 requires-python = ">=3.7, <4"
 license = { file = "LICENSE" }
-authors = [{ name = "HGV", email = "development@hgv.it" }]
+authors = [
+  { name = "HGV", email = "development@hgv.it" },
+  { name = "Rubin Canaj" },
+]
 dynamic = ["version"]
 
 [project.urls]
