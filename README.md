@@ -1,4 +1,4 @@
-# mss-python
+# mss-python ![PyPI](https://img.shields.io/pypi/v/mss-python)
 
 MSS API client for Python projects
 
