@@ -92,7 +92,7 @@ def refine_getHotelList(resp: dict) -> dict:
         return resp
     elif "hotel" not in resp["result"] or resp["result"]["hotel"] is None:
         return resp
-    elif resp["result"]["hotel"] is list:
+    elif resp["result"]["hotel"] is not list:
         resp["result"]["hotel"] = [resp["result"]["hotel"]]
 
     for hotel in resp["result"]["hotel"]:
@@ -107,5 +107,5 @@ def refine_getHotelList(resp: dict) -> dict:
 def ensure_list_value(hotel: dict, parent_fld: str, child_fld: str) -> None:
     if parent_fld not in hotel:
         hotel[parent_fld] = {child_fld: []}
-    elif hotel[parent_fld][child_fld] is list:
+    elif hotel[parent_fld][child_fld] is not list:
         hotel[parent_fld][child_fld] = [hotel[parent_fld][child_fld]]
