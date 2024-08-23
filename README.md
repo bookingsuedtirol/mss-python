@@ -33,7 +33,7 @@ This library requires an IANA Time Zone database to be present on the operating 
 
 ## Example Execution
 
-`pip install -r requirements.txt`
+`pip3 install -r requirements.txt`
 
 `python3 -m examples.simple.main`
 
