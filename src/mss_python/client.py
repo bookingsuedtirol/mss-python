@@ -58,7 +58,7 @@ class Client:
 
         root = method.get_base_xml(self.cred, self.lang)
 
-        if data is None:
+        if data is not None:
             root = change_structure(root, data)
 
         if _print is True:
