@@ -1,11 +1,12 @@
-import sys
-
-# # Add the parent directory to the Python path
-sys.path.append("../../src/mss_python/")
-
-from client import Client
-from request.types_mss import *
-from request.methods import MethodName
+from src.mss_python.client import Client
+from src.mss_python.request.types_mss import (
+    Credentials,
+    Request,
+    Search,
+    Options,
+    HotelDetails,
+)
+from src.mss_python.request.methods import MethodName
 
 
 if __name__ == "__main__":
