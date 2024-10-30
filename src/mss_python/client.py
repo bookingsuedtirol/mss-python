@@ -32,6 +32,17 @@ def change_structure(root: Root, child: BaseType):
     return root
 
 
+# Replace all picture urls with the new, cdn ones
+def replace_picture_urls(path, key, value):
+    if key == "url" and path[-2][0] == "picture":
+        return key, value.replace(
+            "https://easychannel.it/mss/mss_renderimg.php?",
+            "https://cdn.easychannel.it/mss/mss_renderimg.php?",
+        )
+    else:
+        return key, value
+
+
 class Client:
     def __init__(
         self, cred: Credentials, lang: list, elements: list | None = None
@@ -70,7 +81,9 @@ class Client:
             headers={"Content-Type": "application/xml"},
         )
 
-        responseRoot = xmltodict.parse(response.content)
+        responseRoot = xmltodict.parse(
+            response.content, postprocessor=replace_picture_urls
+        )
         error = responseRoot["root"]["header"]["error"]
         if int(error["code"]) > 0:
             raise Exception(
